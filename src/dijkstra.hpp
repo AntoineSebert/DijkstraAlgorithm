@@ -15,14 +15,19 @@
 #include <memory>
 #include <numeric>
 #include <queue>
-#include <string>
+#include <set>
 #include <utility>
+#include <vector>
 
 class Dijkstra {
 	/* attributes */
 		private:
-			std::map<unsigned int*, unsigned int*> paths;
-			std::priority_queue<unsigned int> nodes;
+			// key = unqiue node index, value = weight
+			std::map<unsigned int, int*> nodes;
+			// allow duplicates, but values are ascending ordered
+			std::priority_queue<int, std::vector<int>, std::greater<int>> weight;
+			// unique paths, pointing to nodes, bound to their weight
+			std::map<std::pair<unsigned int*, unsigned int*/*, comparison*/>, int> paths; // assert(e.first < e.second)
 	/* members */
 		public:
 			// constructors
@@ -36,8 +41,8 @@ class Dijkstra {
 				Dijkstra& operator=(Dijkstra&& other) noexcept;
 		protected:
 			void init();
-			[[maybe_unused]] int* minDistanceSearch();
+			[[maybe_unused]] int* minDistanceSearch(); // the priority_queue does the job for us
 			void distancesUpdate();
-			pair<unsigned int*, unsigned int*> shOrtestPath();
+			std::pair<unsigned int*, unsigned int*> shOrtestPath();
 			void mainAlgorithm();
 };
