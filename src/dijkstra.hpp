@@ -22,11 +22,11 @@ class Dijkstra {
 	/* attributes */
 		private:
 			// key = unqiue node index, value = weight
-			std::map<unsigned int, int*> nodes;
+			std::map<unsigned int, std::weak_ptr<int>> nodes;
 			// allow duplicates, but values are ascending ordered
 			std::priority_queue<int, std::vector<int>, std::greater<int>> weights;
 			// unique paths, pointing to nodes, bound to their weight
-			std::map<std::pair<unsigned int*, unsigned int*/*, comparison*/>, int> paths; // assert(e.first < e.second)
+			std::map<std::pair<std::weak_ptr<unsigned int>, std::weak_ptr<unsigned int>/*, comparison*/>, int> paths; // assert(e.first < e.second)
 	/* members */
 		public:
 			// constructors
