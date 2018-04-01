@@ -1,6 +1,7 @@
 /*
  * @author Antoine "Anthony" Sébert
  * @description An implementation of the Dijkstra algorithm in C++17 as a class - header
+ * @note no need to specialize std::swap, because it uses the move constructor and move assignment operator
  * @date 01/04/2018
  * @todo Spécialisation de l'algorithme : arrêter la recherche lorsque l'égalité s(1) = s(fin) est vérifiée, dans le cas où on ne cherche que la distance minimale entre s(deb) et s(fin)
  */
@@ -34,7 +35,7 @@ class Dijkstra {
 				Dijkstra(const Dijkstra& other);
 				Dijkstra(Dijkstra&& other) noexcept;
 			// destructors
-				~Dijkstra() noexcept;
+				~Dijkstra() noexcept/* = default*/; // maybe not need to redefine
 			// operators
 				Dijkstra& operator=(const Dijkstra& other);
 				Dijkstra& operator=(Dijkstra&& other) noexcept;
