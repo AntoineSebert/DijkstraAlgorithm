@@ -41,8 +41,8 @@ class Dijkstra {
 				Dijkstra& operator=(Dijkstra&& other) noexcept;
 		protected:
 			void init();
-			[[maybe_unused]] int* minDistanceSearch(); // the priority_queue does the job for us
+			[[maybe_unused]] int* findMinDistance(); // the priority_queue does the job for us
 			void distancesUpdate();
-			std::pair<unsigned int*, unsigned int*> shOrtestPath();
+			std::pair<unsigned int*, unsigned int*> shortestPath();
 			void mainAlgorithm();
 };
