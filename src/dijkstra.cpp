@@ -11,8 +11,8 @@ using namespace std;
 // public
 	// constructors
 		Dijkstra::Dijkstra() {}
-		Dijkstra::Dijkstra(const Dijkstra& other) : nodes(other.nodes), weights(other.weights), paths(other.paths) {}
-		Dijkstra::Dijkstra(Dijkstra&& other) noexcept : nodes(other.nodes), weights(other.weights), paths(other.paths) { /* destroy eventual dynamic data */ }
+		Dijkstra::Dijkstra(const Dijkstra& other) : nodes(other.nodes), paths(other.paths) {}
+		Dijkstra::Dijkstra(Dijkstra&& other) noexcept : nodes(other.nodes), paths(other.paths) { /* destroy eventual dynamic data */ }
 	// destructors
 		Dijkstra::~Dijkstra() noexcept { /* destroy eventual dynamic data */ }
 	// operators
@@ -27,23 +27,27 @@ using namespace std;
 				return *this;
 
 			nodes = other.nodes;
-			weights = other.weights;
 			paths = other.paths;
 			 /* destroy eventual dynamic data */
 
 			return *this;
 		}
-// protected:
+// protected
+	/*
+	Initialisation(G,s(deb))
+	1 pour chaque point s de G faire
+	2 	d[s] := infini	// on initialise les sommets autres que s(deb) à infini
+	3 fin pour
+	4 d[sdeb] := 0	// la distance au sommet de départ s(deb) est nulle
+	*/
 	void Dijkstra::init() {
 		/*
-		Initialisation(G,s(deb))
-		1 pour chaque point s de G faire
-		2    d[s] := infini             // on initialise les sommets autres que s(deb) à infini
-		3 fin pour
-		4 d[sdeb] := 0                  // la distance au sommet de départ s(deb) est nulle
+		for(auto const& [key, val] : nodes)
+			val.get() = numeric_limits<int>::max();
+		beginningNode.get().second = 0;
 		*/
 	}
-	[[maybe_unused]] int* Dijkstra::findMinDistance() {
+	[[maybe_unused]] unsigned int* Dijkstra::findMinDistance() {
 		/*
 		1 mini := infini
 		2 sommet := -1
