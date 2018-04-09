@@ -20,39 +20,40 @@
 #include <utility>
 #include <vector>
 
-#ifndef weight
-#define weight std::shared_ptr<unsigned int>
-#endif
-
 // node index + node weight
 typedef std::pair<unsigned int, unsigned int> node;
 typedef std::pair<std::weak_ptr<node>, std::weak_ptr<node>> link;
 
-class Dijkstra {
-	/* attributes */
-		private:
-			std::shared_ptr<node> firstNode;
-			/*
-			 * Collection of unique nodes (based on their index), iterable and direct access through key value
-			*/
-			std::set<std::shared_ptr<node>/*, comparison*/> nodes;
-			std::priority_queue<weight, std::vector<weight>/*, comparison*/> weights;
-			std::map<link, weight/*, comparison*/> paths; // assert(link.first < link.second)
-	/* members */
-		public:
-			// constructors
-				Dijkstra()/* = delete*/; // delete default constructor ?
-				Dijkstra(const Dijkstra& other);
-				Dijkstra(Dijkstra&& other) noexcept;
-			// destructors
-				~Dijkstra() noexcept/* = default*/; // maybe not need to redefine
-			// operators
-				Dijkstra& operator=(const Dijkstra& other);
-				Dijkstra& operator=(Dijkstra&& other) noexcept;
-		protected:
-			void init();
-			[[maybe_unused]] unsigned int* findMinDistance(); // the priority_queue does the job for us
-			void distancesUpdate();
-			std::pair<unsigned int*, unsigned int*> shortestPath();
-			void mainAlgorithm();
-};
+namespace dijkstra_algorithm {
+	#ifndef weight
+	#define weight std::shared_ptr<unsigned int>
+	#endif
+	class Dijkstra {
+		/* attributes */
+			private:
+				std::shared_ptr<node> firstNode;
+				/*
+				 * Collection of unique nodes (based on their index), iterable and direct access through key value
+				*/
+				std::set<std::shared_ptr<node>/*, comparison*/> nodes;
+				std::priority_queue<weight, std::vector<weight>/*, comparison*/> weights;
+				std::map<link, weight/*, comparison*/> paths; // assert(link.first < link.second)
+		/* members */
+			public:
+				// constructors
+					Dijkstra()/* = delete*/; // delete default constructor ?
+					Dijkstra(const Dijkstra& other);
+					Dijkstra(Dijkstra&& other) noexcept;
+				// destructors
+					~Dijkstra() noexcept/* = default*/; // maybe not need to redefine
+				// operators
+					Dijkstra& operator=(const Dijkstra& other);
+					Dijkstra& operator=(Dijkstra&& other) noexcept;
+			protected:
+				void init();
+				[[maybe_unused]] unsigned int* findMinDistance(); // the priority_queue does the job for us
+				void distancesUpdate();
+				std::pair<unsigned int*, unsigned int*> shortestPath();
+				void mainAlgorithm();
+	};
+}
