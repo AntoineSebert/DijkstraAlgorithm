@@ -44,8 +44,8 @@ using namespace std;
 		/*
 		for(auto const& [key, val] : nodes)
 			val.get() = numeric_limits<int>::max();
-		beginningNode.get().second = 0;
 		*/
+		firstNode.get().second = 0;
 	}
 	[[maybe_unused]] unsigned int* Dijkstra::findMinDistance() {
 		/*
@@ -79,6 +79,10 @@ using namespace std;
 		*/
 	}
 	void Dijkstra::mainAlgorithm() {
+		init();
+		while(nodes.size()) {
+
+		}
 		/*
 		Initialisation(G,sdeb)
 		2 Q := ensemble de tous les nœuds

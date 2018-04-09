@@ -20,6 +20,10 @@
 #include <utility>
 #include <vector>
 
+#ifndef weight
+#define weight std::shared_ptr<unsigned int>
+#endif
+
 // node index + node weight
 typedef std::pair<unsigned int, unsigned int> node;
 typedef std::pair<std::weak_ptr<node>, std::weak_ptr<node>> link;
@@ -27,10 +31,13 @@ typedef std::pair<std::weak_ptr<node>, std::weak_ptr<node>> link;
 class Dijkstra {
 	/* attributes */
 		private:
-			std::shared_ptr<node> beginningNode;
-			std::priority_queue<std::shared_ptr<node>, std::set<std::shared_ptr<node>>/*, comparison*/> nodes;
-			// unique paths, pointing to nodes, bound to their weight
-			std::map<link, unsigned int/*, comparison*/> paths; // assert(link.first < link.second)
+			std::shared_ptr<node> firstNode;
+			/*
+			 * Collection of unique nodes (based on their index), iterable and direct access through key value
+			*/
+			std::set<std::shared_ptr<node>/*, comparison*/> nodes;
+			std::priority_queue<weight, std::vector<weight>/*, comparison*/> weights;
+			std::map<link, weight/*, comparison*/> paths; // assert(link.first < link.second)
 	/* members */
 		public:
 			// constructors
