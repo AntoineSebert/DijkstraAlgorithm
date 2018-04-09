@@ -42,18 +42,84 @@ namespace dijkstra_algorithm {
 			public:
 				// constructors
 					Dijkstra()/* = delete*/; // delete default constructor ?
-					Dijkstra(const Dijkstra& other);
-					Dijkstra(Dijkstra&& other) noexcept;
+					Dijkstra(const Dijkstra& other) : nodes(other.nodes), paths(other.paths) {}
+					Dijkstra(Dijkstra&& other) noexcept : nodes(other.nodes), paths(other.paths) { /* destroy eventual dynamic data */ }
 				// destructors
 					~Dijkstra() noexcept/* = default*/; // maybe not need to redefine
 				// operators
-					Dijkstra& operator=(const Dijkstra& other);
-					Dijkstra& operator=(Dijkstra&& other) noexcept;
+					Dijkstra& operator=(const Dijkstra& other) {
+						Dijkstra tmp(other);
+						*this = move(tmp);
+
+						return *this;
+					}
+					Dijkstra& operator=(Dijkstra&& other) noexcept {
+						if(this == &other)
+							return *this;
+
+						nodes = other.nodes;
+						paths = other.paths;
+						 /* destroy eventual dynamic data */
+
+						return *this;
+					}
 			protected:
-				void init();
-				[[maybe_unused]] unsigned int* findMinDistance(); // the priority_queue does the job for us
-				void distancesUpdate();
-				std::pair<unsigned int*, unsigned int*> shortestPath();
-				void mainAlgorithm();
+				/*
+				Initialisation(G,s(deb))
+				1 pour chaque point s de G faire
+				2 	d[s] := infini	// on initialise les sommets autres que s(deb) à infini
+				3 fin pour
+				4 d[sdeb] := 0	// la distance au sommet de départ s(deb) est nulle
+				*/
+				void init() {
+					/*
+					for(auto const& [key, val] : nodes)
+						val.get() = numeric_limits<int>::max();
+					*/
+					firstNode.get().second = 0;
+				}
+				/*
+				1 mini := infini
+				2 sommet := -1
+				3 pour chaque sommet s de Q
+				4 	si d[s] < mini
+				5 		mini := d[s]
+				6 		sommet := s
+				7 renvoyer sommet
+				*/
+				// the priority_queue does the job for us
+				[[maybe_unused]] unsigned int* findMinDistance() { }
+				/*
+				1 si d[s2] > d[s1] + Poids(s1,s2)	// Si la distance de sdeb à s2 est plus grande que celle de sdeb à S1 plus celle de S1 à S2
+				2 	d[s2] := d[s1] + Poids(s1,s2)	// On prend ce nouveau chemin qui est plus court
+				3s 	prédécesseur[s2] := s1	// En notant par où on passe
+				*/
+				void distancesUpdate() { }
+				/*
+				1 A = suite vide
+				2 s := sfin
+				3 tant que s != sdeb faire
+				4 	A = A + s	// on ajoute s à la suite A
+				5 	s = prédécesseur[s]	// on continue de suivre le chemin
+				6 fin tant que
+				*/
+				std::pair<unsigned int*, unsigned int*> shortestPath() { }
+				/*
+				Initialisation(G,sdeb)
+				2 Q := ensemble de tous les nœuds
+				3 tant que Q n'est pas un ensemble vide faire
+				4 	s1 := Trouve_min(Q)
+				5 	Q := Q privé de s1
+				6 	pour chaque nœud s2 voisin de s1 faire
+				7 		maj_distances(s1,s2)
+				8 	fin pour
+				9 fin tant que
+				*/
+				void mainAlgorithm() {
+					init();
+					while(nodes.size()) {
+
+					}
+				}
 	};
 }
