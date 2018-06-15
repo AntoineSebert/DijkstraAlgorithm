@@ -20,14 +20,15 @@
 #include <utility>
 #include <vector>
 
+#ifndef weight
+#define weight std::shared_ptr<unsigned int>
+#endif
+
 // node index + node weight
 typedef std::pair<unsigned int, unsigned int> node;
 typedef std::pair<std::weak_ptr<node>, std::weak_ptr<node>> link;
 
 namespace dijkstra_algorithm {
-	#ifndef weight
-	#define weight std::shared_ptr<unsigned int>
-	#endif
 	class Dijkstra {
 		/* attributes */
 			private:
