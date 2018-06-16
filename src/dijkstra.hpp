@@ -29,8 +29,15 @@ typedef std::pair<unsigned int, unsigned int> node;
 typedef std::pair<std::weak_ptr<node>, std::weak_ptr<node>> link;
 
 namespace dijkstra_algorithm {
+	void* AbstractNode;
+	class AbstractGraphContainer {
+		virtual ~AbstractGraphContainer() noexcept = 0;
+	};
+	class AbstractWeightContainer {
+		virtual ~AbstractWeightContainer() noexcept = 0;
+	};
 	class Dijkstra {
-		/* attributes */
+		/* ATTRIBUTES */
 			private:
 				std::shared_ptr<node> firstNode;
 				/*
@@ -39,18 +46,19 @@ namespace dijkstra_algorithm {
 				std::set<std::shared_ptr<node>/*, comparison*/> nodes;
 				std::priority_queue<weight, std::vector<weight>/*, comparison*/> weights;
 				std::map<link, weight/*, comparison*/> paths; // assert(link.first < link.second)
-		/* members */
+				AbstractGraphContainer* graphContainer; // adjacency list
+		/* MEMBERS */
 			public:
 				// constructors
-					Dijkstra()/* = delete*/; // delete default constructor ?
+					Dijkstra()/* = delete*/ {} // delete default constructor ?
 					Dijkstra(const Dijkstra& other) : nodes(other.nodes), paths(other.paths) {}
 					Dijkstra(Dijkstra&& other) noexcept : nodes(other.nodes), paths(other.paths) { /* destroy eventual dynamic data */ }
 				// destructors
-					~Dijkstra() noexcept/* = default*/; // maybe not need to redefine
+					~Dijkstra() noexcept/* = default*/ {} // maybe not need to redefine
 				// operators
 					Dijkstra& operator=(const Dijkstra& other) {
 						Dijkstra tmp(other);
-						*this = move(tmp);
+						*this = std::move(tmp);
 
 						return *this;
 					}
@@ -60,7 +68,7 @@ namespace dijkstra_algorithm {
 
 						nodes = other.nodes;
 						paths = other.paths;
-						 /* destroy eventual dynamic data */
+						/* destroy eventual dynamic data */
 
 						return *this;
 					}
@@ -77,7 +85,7 @@ namespace dijkstra_algorithm {
 					for(auto const& [key, val] : nodes)
 						val.get() = numeric_limits<int>::max();
 					*/
-					firstNode.get().second = 0;
+					firstNode->second = 0;
 				}
 				/*
 				1 mini := infini
