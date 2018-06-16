@@ -1,7 +1,25 @@
+/**
+* Graph Library
+* Copyright (c) 2014, Antoine Sébert antoine.sb@orange.fr, All rights reserved.
+*
+* This library is free software; you can redistribute it and/or
+* modify it under the terms of the GNU Lesser General Public
+* License as published by the Free Software Foundation; either
+* version 3.0 of the License, or (at your option) any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+* Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public
+* License along with this library.
+*/
+
 #ifndef GRAPH.HPP
 #define GRAPH.HPP
-#endif
 
+#include <any>
 #include <map>
 #include <utility>
 #include <set>
@@ -18,77 +36,85 @@ namespace graph {
 	};
 	template<typename data>
 	class AbstractGraph {
+		// put in a particular header
+		class AbstractNode {
+			data value;
+			AbstractNode() = 0;
+		};
 		// ATTRIBUTES
-			void* container;
+			std::any container<std::any>;
+			typename type;
 		// MEMBERS
 			// default constructor
 				AbstractGraph() = 0;
 			// copy constructor
 				AbstractGraph(const AbstractGraph& other) = 0;
-			// move constructor1
-				AbstractGraph(AbstractGraph&& other) noexcept : data(other.data) = 0;
-			// destructor2
+			// move constructor
+				AbstractGraph(AbstractGraph&& other) noexcept = 0;
+			// destructor
 				~AbstractGraph() noexcept = 0;
 			// operators
 				// arithmetic operators
 					AbstractGraph& operator=(const AbstractGraph& other) = 0;
-					R K::operator+(S b) = 0;
-					R K::operator-(S b) = 0;
-					R K::operator+() = 0;
-					R K::operator-() = 0;
-					R K::operator*(S b) = 0;
-					R K::operator/(S b) = 0;
-					R K::operator%(S b) = 0;
-					R K::operator++() = 0;
-					R K::operator++(int) = 0;
-					R K::operator--() = 0;
-					R K::operator--(int) = 0;
+					auto operator+(AbstractNode b) = 0;		// add node or path
+					auto operator-(AbstractNode b) = 0;		// remove node of path if they exists (and if graph has uniques node labels ?)
+					auto operator+(AbstractGraph b) = 0;	// add nodes and paths
+					auto operator-(AbstractGraph b) = 0;	// add nodes and paths if they exists (and if graph has uniques node labels ?)
+					auto operator+() = delete;				// graph is not an arithmetic type
+					auto operator-() = delete;				// graph is not an arithmetic type
+					auto operator*(S b) = delete;			// nonsense
+					auto operator/(S b) = delete;			// nonsense
+					auto operator%(S b) = delete;			// nonsense
+					auto operator++() = delete;				// nonsense
+					auto operator++(int) = delete;			// nonsense
+					auto operator--() = delete;				// nonsense
+					auto operator--(int) = delete;			// nonsense
 				// bitwise operators
-					R K::operator~() = 0;
-					R K::operator&(S b) = 0;
-					R K::operator|(S b) = 0;
-					R K::operator^(S b) = 0;
-					R K::operator<<(S b) = 0;
-					R K::operator>>(S b) = 0;
+					auto operator~() = 0;
+					auto operator&(S b) = 0;
+					auto operator|(S b) = 0;
+					auto operator^(S b) = 0;
+					auto operator<<(S b) = 0;
+					auto operator>>(S b) = 0;
 				// comparison/relational operators
-					bool K::operator==(const S& b) = 0;
-					bool K::operator!=(const S& b) = 0;
-					bool K::operator!=(const S& b) const = 0;
-					bool K::operator>(const S& b) const = 0;
-					bool K::operator<(const S& b) const = 0;
-					bool K::operator>=(const S& b) const = 0;
-					bool K::operator<=(const S& b) const = 0;
-					bool K::operator<=>(const S& b) const = 0;
+					bool operator==(const AbstractGraph& b) = 0;
+					bool operator!=(const AbstractGraph& b) = 0;
+					bool operator!=(const AbstractGraph& b) const = 0;
+					bool operator>(const AbstractGraph& b) const = 0;
+					bool operator<(const AbstractGraph& b) const = 0;
+					bool operator>=(const AbstractGraph& b) const = 0;
+					bool operator<=(const AbstractGraph& b) const = 0;
+					bool operator<=>(const AbstractGraph& b) const = 0;
 				// compound assignment operators
-					R& K::operator+=(S b) = 0;
-					R& K::operator-=(S b) = 0;
-					R& K::operator*=(S b) = 0;
-					R& K::operator/=(S b) = 0;
-					R& K::operator%=(S b) = 0;
-					R& K::operator&=(S b) = 0;
-					R& K::operator|=(S b) = 0;
-					R& K::operator^=(S b) = 0;
-					R& K::operator<<=(S b) = 0;
-					R& K::operator>>=(S b) = 0;
+					R& operator+=(S b) = 0;
+					R& operator-=(S b) = 0;
+					R& operator*=(S b) = 0;
+					R& operator/=(S b) = 0;
+					R& operator%=(S b) = 0;
+					R& operator&=(S b) = 0;
+					R& operator|=(S b) = 0;
+					R& operator^=(S b) = 0;
+					R& operator<<=(S b) = 0;
+					R& operator>>=(S b) = 0;
 				// logical operators
-					bool K::operator!() = 0;
-					bool K::operator&&(S b) = 0;
-					bool K::operator||(S b) = 0;
+					bool operator!() = 0;
+					bool operator&&(S b) = 0;
+					bool operator||(S b) = 0;
 				// member and pointer operators
-					R& K::operator[](S b) = 0;
-					R& K::operator*() = 0;
-					R& K::operator&() = 0;
-					R& K::operator->() = 0;
-					R& K::operator->*(S b) = 0;
+					R& operator[](S b) = 0;
+					R& operator*() = 0;
+					R& operator&() = 0;
+					R& operator->() = 0;
+					R& operator->*(S b) = 0;
 				// other operators
-					R K::operator()(S a, T b, ...) = 0;
-					R& K::operator,(S b) = 0;
-					R operator ""_b(T a) = 0;
-					explicit K::operator R() = 0;
-					void* K::operator new(size_t x) = 0;
-					void* K::operator new[](size_t x) = 0;
-					void K::operator delete(void *a) = 0;
-					void K::operator delete[](void *a) = 0;
+					auto operator()(S a, T b, ...) = 0;
+					R& operator,(S b) = 0;
+					auto operator ""_b(T a) = 0;
+					explicit operator R() = 0;
+					void* operator new(size_t x) = 0;
+					void* operator new[](size_t x) = 0;
+					void operator delete(void *a) = 0;
+					void operator delete[](void *a) = 0;
 			// move assignment operator
 				AbstractGraph& operator=(AbstractGraph&& other) noexcept = 0;
 			// iterators
@@ -178,3 +204,5 @@ namespace graph {
 
 	};
 }
+
+#endif
