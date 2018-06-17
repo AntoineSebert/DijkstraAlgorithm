@@ -34,92 +34,91 @@ namespace graph {
 		UNIQUE,
 		NOT_UNIQUE
 	};
+	template <typename T = unsigned int>
+	using abstract_link = std::pair<T, T>;
 	template<typename data>
 	class abstract_graph {
-		// put in a particular header and transform it into a named tuple
-		class abstract_node {
-			data value;
-			abstract_node();
-			virtual void pureVirtual() = 0;
-		};
-		// transform it into a pair
-		class abstract_link {
-			abstract_link();
-			virtual void pureVirtual() = 0;
-		};
 		// ATTRIBUTES
+			// put in a particular header and transform it into a named tuple
+			class abstract_node {
+				data value;
+				abstract_node();
+				virtual void pureVirtual() = 0;
+			};
 			std::any container;
+			static unsigned int instances;
 		// MEMBERS
 			virtual void pureVirtual() = 0;
 			// default constructor
 				abstract_graph();
 			// copy constructor
-				abstract_graph(const abstract_graph& other) : container(other.container) {}
+				abstract_graph(const abstract_graph& rhs) : container(rhs.container) {}
 			// move constructor
-				abstract_graph(abstract_graph&& other) noexcept = 0;
+				abstract_graph(abstract_graph&& rhs) noexcept = 0;
 			// destructor
 				~abstract_graph() noexcept = 0;
 			// operators
 				// arithmetic operators
-					abstract_graph& operator=(const abstract_graph& other) = 0;
-					auto operator+(abstract_node b) = 0;						// add node
-					auto operator-(abstract_node b) = 0;						// remove node if it exist
-					auto operator+(abstract_graph b) = 0;						// add nodes and paths
-					auto operator-(abstract_graph b) = 0;						// remove nodes and paths if they exist
-					// nonsenses
-					/*
-					auto operator+() = delete;
-					auto operator-() = delete;
-					auto operator*(S b) = delete;
-					auto operator/(S b) = delete;
-					auto operator%(S b) = delete;
-					auto operator++() = delete;
-					auto operator++(int) = delete;
-					auto operator--() = delete;
-					auto operator--(int) = delete;
+					abstract_graph& operator=(const abstract_graph& rhs) = 0;
+					abstract_graph operator+(const abstract_node& rhs) = 0;				// add node
+					abstract_graph operator-(const abstract_node& rhs) = 0;				// remove node if it exist
+					abstract_graph operator+(const abstract_graph& rhs) = 0;			// add nodes and paths
+					abstract_graph operator-(const abstract_graph& rhs) = 0;			// remove nodes and paths if they exist
+					/* nonsenses
+					abstract_graph operator+() = delete;
+					abstract_graph operator-() = delete;
+					abstract_graph operator*(const std::any& rhs) = delete;
+					abstract_graph operator/(const std::any& rhs) = delete;
+					abstract_graph operator%(const std::any& rhs) = delete;
+					abstract_graph& operator++() = delete;
+					abstract_graph operator++(int) = delete;
+					abstract_graph& operator--() = delete;
+					abstract_graph operator--(int) = delete;
 					*/
 				// bitwise operators
-					auto operator~() = 0;										// invert links orientation in oriented graphs
-					auto operator&(abstract_graph b) = 0;						// intersection
-					auto operator|(abstract_graph b) = 0;						// union
-					auto operator^(abstract_graph b) = 0;						// difference
-					auto operator<<(abstract_graph b) = 0;						// output
-					auto operator>>(abstract_node b) = 0;						// input
+					auto operator~() = 0;												// invert links orientation in oriented graphs
+					auto operator&(const abstract_graph& rhs) = 0;						// intersection
+					auto operator|(const abstract_graph& rhs) = 0;						// union
+					auto operator^(const abstract_graph& rhs) = 0;						// difference
+					auto operator<<(const abstract_graph& rhs) = 0;						// output
+					auto operator>>(const abstract_node& rhs) = 0;						// input
 				// comparison/relational operators
-					bool operator==(const abstract_graph& b) = 0;				// nodes and paths
-					bool operator!=(const abstract_graph& b) = 0;				// nodes and paths
-					bool operator!=(const abstract_graph& b) const = 0;			// nodes and paths
-					bool operator>(const abstract_graph& b) const = 0;			// number of nodes
-					bool operator<(const abstract_graph& b) const = 0;			// number of nodes
-					bool operator>=(const abstract_graph& b) const = 0;			// number of nodes
-					bool operator<=(const abstract_graph& b) const = 0;			// number of nodes
-					bool operator<=>(const abstract_graph& b) const = 0;		// number of nodes ( ͡° ͜ʖ ͡°)
+					bool operator==(const abstract_graph& rhs) = 0;						// compare nodes and paths
+					bool operator!=(const abstract_graph& rhs) = 0;						// compare nodes and paths
+					bool operator!=(const abstract_graph& rhs) const = 0;				// compare nodes and paths
+					bool operator>(const abstract_graph& rhs) const = 0;				// compare number of nodes
+					bool operator<(const abstract_graph& rhs) const = 0;				// compare number of nodes
+					bool operator>=(const abstract_graph& rhs) const = 0;				// compare number of nodes
+					bool operator<=(const abstract_graph& rhs) const = 0;				// compare number of nodes
+					bool operator<=>(const abstract_graph& rhs) const = 0;				// compare number of nodes ( ͡° ͜ʖ ͡°)
 				// compound assignment operators
-					abstract_graph& operator+=(abstract_node b) = 0;			// add node
-					abstract_graph& operator-=(abstract_node b) = 0;			// remove node if it exist
-					abstract_graph& operator+=(abstract_graph b) = 0;			// add nodes and paths
-					abstract_graph& operator-=(abstract_graph b) = 0;			// remove nodes and paths if they exist
-					abstract_graph& operator*=(abstract_graph b) = delete;		// nonsense
-					abstract_graph& operator/=(abstract_graph b) = delete;		// nonsense
-					abstract_graph& operator%=(abstract_graph b) = delete;		// nonsense
-					abstract_graph& operator&=(abstract_graph b) = 0;			// intersection
-					abstract_graph& operator|=(abstract_graph b) = 0;			// union
-					abstract_graph& operator^=(abstract_graph b) = 0;			// difference
-					abstract_graph& operator<<=(abstract_graph b) = 0;			// output
-					abstract_graph& operator>>=(abstract_graph b) = 0;			// input
+					abstract_graph& operator+=(const abstract_node& rhs) = 0;			// add node
+					abstract_graph& operator-=(const abstract_node& rhs) = 0;			// remove node if it exist
+					abstract_graph& operator+=(const abstract_graph& rhs) = 0;			// add nodes and paths
+					abstract_graph& operator-=(const abstract_graph& rhs) = 0;			// remove nodes and paths if they exist
+					/* nonsenses
+					abstract_graph& operator*=(abstract_graph rhs) = delete;
+					abstract_graph& operator/=(abstract_graph rhs) = delete;
+					abstract_graph& operator%=(abstract_graph rhs) = delete;
+					*/
+					abstract_graph& operator&=(const abstract_graph& rhs) = 0;			// intersection
+					abstract_graph& operator|=(const abstract_graph& rhs) = 0;			// union
+					abstract_graph& operator^=(const abstract_graph& rhs) = 0;			// difference
+					abstract_graph& operator<<=(const abstract_graph& rhs) = 0;			// output
+					abstract_graph& operator>>=(const abstract_graph& rhs) = 0;			// input
 				// logical operators
-					bool operator!() = 0;										// check if empty
-					bool operator&&(abstract_graph b) = 0;						// check if the two graphs are not empty
-					bool operator||(abstract_graph b) = 0;						// check if one of the two graphs are not empty
+					bool operator!() = 0;												// check if empty
+					bool operator&&(const abstract_graph& rhs) = 0;						// check if the two graphs are not empty
+					bool operator||(const abstract_graph& rhs) = 0;						// check if one of the two graphs are not empty
 				// member and pointer operators
 					abstract_node& operator[](unsigned int index) = 0;
-					std::any& operator*() = delete;								// nonsense
-					abstract_graph& operator&() = 0;
-					R& operator->() = 0;										// access underlying container
-					R& operator->*(std::any b) = delete;						// nonsense
+					std::any& operator*() = delete;										// nonsense
+					abstract_graph& operator&() = delete;								// possible optimization
+					R& operator->() = 0;												// access underlying container
+					R& operator->*(std::any rhs) = delete;								// nonsense
 				// other operators
-					auto operator()(S a, T b, ...) = 0;
-					abstract_graph& operator,(abstract_graph b) = delete;		// nonsense
+					auto operator()(std::any a, std::any rhs, ...) = delete;			// could not find a good utility of this
+					abstract_graph& operator,(const abstract_graph& rhs) = delete;		// nonsense
 					auto operator ""_b(T a) = 0;
 					explicit operator oriented_graph() = 0;
 					explicit operator unoriented_graph() = 0;
@@ -138,10 +137,10 @@ namespace graph {
 					explicit operator mixed_orientation_weighted_graph = 0;
 					explicit operator mixed_orientation_unweighted_graph() = 0;
 					explicit operator mixed_orientation_mixed_weight_graph() = 0;
-					void* operator new(size_t x) = delete;						// possible optimization
-					void* operator new[](size_t x) = delete;					// possible optimization
-					void operator delete(void *a) = delete;						// possible optimization
-					void operator delete[](void *a) = delete;					// possible optimization
+					void* operator new(size_t x) = delete;							// possible optimization
+					void* operator new[](size_t x) = delete;						// possible optimization
+					void operator delete(void *a) = delete;							// possible optimization
+					void operator delete[](void *a) = delete;						// possible optimization
 			// move assignment operator
 				abstract_graph& operator=(abstract_graph&& other) noexcept = 0;
 			// iterators
@@ -208,66 +207,131 @@ namespace graph {
 	// abstract graph orientation
 		template<typename node_data = unsigned int>
 		class oriented_graph : public abstract_graph<node_data> {
+			// ATTRIBUTES
+		// MEMBERS
 			virtual oriented_graph() = 0;
 		};
 		template<typename node_data = unsigned int>
 		class unoriented_graph : public abstract_graph<node_data> {
+			// ATTRIBUTES
+		// MEMBERS
 			virtual unoriented_graph() = 0;
 		};
 		template<typename node_data = unsigned int>
 		class mixed_orientation_graph : public oriented_graph<node_data>, public unoriented_graph<node_data> {
+			// ATTRIBUTES
+		// MEMBERS
 			virtual mixed_orientation_graph() = 0;
 		};
 	// abstract graph weight
 		template<typename node_data = unsigned int, typename path_weight = unsigned int>
 		class weighted_graph : public abstract_graph<node_data> {
+			// ATTRIBUTES
+		// MEMBERS
 			virtual weighted_graph() = 0;
 		};
 		template<typename node_data = unsigned int>
 		class unweighted_graph : public abstract_graph<node_data> {
+			// ATTRIBUTES
+		// MEMBERS
 			virtual unweighted_graph() = 0;
 		};
 		template<typename node_data = unsigned int, typename path_weight = unsigned int>
 		class mixed_weight_graph : public weighted_graph<typename node_data, typename path_weight = unsigned int>, public unweighted_graph<node_data> {
+			// ATTRIBUTES
+		// MEMBERS
 			virtual mixed_weight_graph() = 0;
 		};
 	// graph subtypes
 		template<typename node_data = unsigned int, typename path_weight = unsigned int>
 		class oriented_weighted_graph : public oriented_graph<node_data>, public weighted_graph<node_data, path_weight> {
-			oriented_weighted_graph();
-
+			// ATTRIBUTES
+			// MEMBERS
+				public:
+					oriented_weighted_graph() {}
+					~oriented_weighted_graph() {}
+				private:
+					void pureVirtual() {}
 		};
 		template<typename node_data = unsigned int>
 		class oriented_unweighted_graph : public oriented_graph<node_data>, public unweighted_graph<node_data> {
-			oriented_unweighted_graph();
+			// ATTRIBUTES
+			// MEMBERS
+				public:
+					oriented_unweighted_graph() {}
+					~oriented_unweighted_graph() {}
+				private:
+					void pureVirtual() {}
 		};
 		template<typename node_data = unsigned int, typename path_weight = unsigned int>
 		class oriented_mixed_weight_graph : public oriented_graph<node_data>, public mixed_weight_graph<node_data, path_weight> {
-			oriented_mixed_weight_graph();
+			// ATTRIBUTES
+			// MEMBERS
+				public:
+					oriented_mixed_weight_graph() {}
+					~oriented_mixed_weight_graph() {}
+				private:
+					void pureVirtual() {}
 		};
 		template<typename node_data = unsigned int, typename path_weight = unsigned int>
 		class unoriented_weighted_graph : public unoriented_graph<node_data>, public weighted_graph<node_data, path_weight> {
-			unoriented_weighted_graph();
+			// ATTRIBUTES
+			// MEMBERS
+				public:
+					unoriented_weighted_graph() {}
+					~unoriented_weighted_graph() {}
+				private:
+					void pureVirtual() {}
 		};
 		template<typename node_data = unsigned int>
 		class unoriented_unweighted_graph : public unoriented_graph<node_data>, public unweighted_graph<node_data> {
-			unoriented_unweighted_graph();
+			// ATTRIBUTES
+			// MEMBERS
+				public:
+					unoriented_unweighted_graph() {}
+					~unoriented_unweighted_graph() {}
+				private:
+					void pureVirtual() {}
 		};
 		template<typename node_data = unsigned int, typename path_weight = unsigned int>
 		class unoriented_mixed_weight_graph : public unoriented_graph<node_data>, public mixed_weight_graph<node_data, path_weight> {
-			unoriented_mixed_weight_graph();
+			// ATTRIBUTES
+			// MEMBERS
+				public:
+					unoriented_mixed_weight_graph() {}
+					~unoriented_mixed_weight_graph() {}
+				private:
+					void pureVirtual() {}
 		};
 		template<typename node_data = unsigned int, typename path_weight = unsigned int>
 		class mixed_orientation_weighted_graph : public mixed_orientation_graph<node_data>, public weighted_graph<node_data, path_weight> {
-			mixed_orientation_weighted_graph() = 0;
+			// ATTRIBUTES
+			// MEMBERS
+				public:
+					mixed_orientation_weighted_graph() {}
+					~mixed_orientation_weighted_graph() {}
+				private:
+					void pureVirtual() {}
 		};
 		template<typename node_data = unsigned int>
 		class mixed_orientation_unweighted_graph : public mixed_orientation_graph<node_data>, public unweighted_graph<node_data> {
-			mixed_orientation_unweighted_graph() = 0;
+			// ATTRIBUTES
+			// MEMBERS
+				public:
+					mixed_orientation_unweighted_graph() {}
+					~mixed_orientation_unweighted_graph() {}
+				private:
+					void pureVirtual() {}
 		};
 		template<typename node_data = unsigned int, typename path_weight = unsigned int>
 		class mixed_orientation_mixed_weight_graph : public mixed_orientation_graph<node_data>, public mixed_weight_graph<node_data, path_weight> {
-			mixed_orientation_mixed_weight_graph() = 0;
+			// ATTRIBUTES
+			// MEMBERS
+				public:
+					mixed_orientation_mixed_weight_graph() {}
+					~mixed_orientation_mixed_weight_graph() {}
+				private:
+					void pureVirtual() {}
 		};
 }
 
