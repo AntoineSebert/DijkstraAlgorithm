@@ -35,6 +35,38 @@ namespace graph {
 			UNIQUE,
 			NOT_UNIQUE
 		};
+		template<typename node_data>
+		class abstract_graph;
+		template<typename node_data>
+		class oriented_graph;
+		template<typename node_data>
+		class unoriented_graph;
+		template<typename node_data>
+		class mixed_orientation_graph;
+		template<typename node_data, typename path_weight>
+		class weighted_graph;
+		template<typename node_data>
+		class unweighted_graph;
+		template<typename node_data, typename path_weight>
+		class mixed_weight_graph;
+		template<typename node_data, typename path_weight>
+		class oriented_weighted_graph;
+		template<typename node_data>
+		class oriented_unweighted_graph;
+		template<typename node_data, typename path_weight>
+		class oriented_mixed_weight_graph;
+		template<typename node_data, typename path_weight>
+		class unoriented_weighted_graph;
+		template<typename node_data>
+		class unoriented_unweighted_graph;
+		template<typename node_data, typename path_weight>
+		class unoriented_mixed_weight_graph;
+		template<typename node_data, typename path_weight>
+		class mixed_orientation_weighted_graph;
+		template<typename node_data>
+		class mixed_orientation_unweighted_graph;
+		template<typename node_data, typename path_weight>
+		class mixed_orientation_mixed_weight_graph;
 	template<typename node_data = unsigned int>
 	class abstract_graph {
 		// ATTRIBUTES
@@ -48,40 +80,23 @@ namespace graph {
 			};
 			std::any container;
 			static unsigned int instances;
-			template<typename node_data>
-			class oriented_graph;
-			template<typename node_data>
-			class unoriented_graph;
-			template<typename node_data>
-			class mixed_orientation_graph;
-			template<typename node_data, typename path_weight>
-			class weighted_graph;
-			template<typename node_data>
-			class unweighted_graph;
-			template<typename node_data, typename path_weight>
-			class mixed_weight_graph;
-			template<typename node_data, typename path_weight>
-			class oriented_weighted_graph;
-			template<typename node_data>
-			class oriented_unweighted_graph;
-			template<typename node_data, typename path_weight>
-			class oriented_mixed_weight_graph;
-			template<typename node_data, typename path_weight>
-			class unoriented_weighted_graph;
-			template<typename node_data>
-			class unoriented_unweighted_graph;
-			template<typename node_data, typename path_weight>
-			class unoriented_mixed_weight_graph;
-			template<typename node_data, typename path_weight>
-			class mixed_orientation_weighted_graph;
-			template<typename node_data>
-			class mixed_orientation_unweighted_graph;
-			template<typename node_data, typename path_weight>
-			class mixed_orientation_mixed_weight_graph;
 		// MEMBERS
-			virtual void pureVirtual() = 0;
 			// default constructor
-				abstract_graph();
+				abstract_graph() = delete;
+				abstract_graph(underlying_container container_type, uniqueness uniqueness) {
+					if(container_type == LIST) {
+						container = (uniqueness == UNIQUE ? std::set<std::any> : std::vector<std::any>);
+						/*
+						if(uniqueness == UNIQUE)
+							container = std::set<std::any>;
+						else
+							container = std::vector<std::any>;
+						*/
+					}
+					else {
+
+					}
+				}
 			// copy constructor
 				abstract_graph(const abstract_graph& rhs) : container(rhs.container) {}
 			// move constructor
@@ -150,7 +165,7 @@ namespace graph {
 				// other operators
 					void operator()(std::any rhs, ...) = delete;							// could not find a good utility of this
 					abstract_graph& operator,(const abstract_graph& rhs) = delete;			// nonsense
-					void operator ""_literal(abstract_graph a) = delete;					// could not find a good utility of this
+					//std::any operator"" _literal(abstract_graph) = delete;				// could not find a good utility of this + throw errors
 
 					virtual explicit operator oriented_graph<std::any>() = 0;
 					virtual explicit operator unoriented_graph<std::any>() = 0;
@@ -242,14 +257,19 @@ namespace graph {
 		class oriented_graph : public abstract_graph<node_data> {
 			// ATTRIBUTES
 			// MEMBERS
-				oriented_graph();
-				virtual void pureVirtual() = 0;
+				public:
+					oriented_graph() = delete;
+					oriented_graph(underlying_container container_type, uniqueness uniqueness) : abstract_graph(container_type, uniqueness) {}
+					~oriented_graph() {}
+				private:
+					virtual void pureVirtual() = 0;
 		};
 		template<typename node_data = unsigned int>
 		class unoriented_graph : public abstract_graph<node_data> {
 			// ATTRIBUTES
 			// MEMBERS
 				unoriented_graph();
+				~unoriented_graph();
 				virtual void pureVirtual() = 0;
 		};
 		template<typename node_data = unsigned int>
@@ -257,6 +277,7 @@ namespace graph {
 			// ATTRIBUTES
 			// MEMBERS
 				mixed_orientation_graph();
+				~mixed_orientation_graph();
 				virtual void pureVirtual() = 0;
 		};
 	// abstract graph weight
@@ -265,6 +286,7 @@ namespace graph {
 			// ATTRIBUTES
 			// MEMBERS
 				weighted_graph();
+				~weighted_graph();
 				virtual void pureVirtual() = 0;
 		};
 		template<typename node_data = unsigned int>
@@ -272,6 +294,7 @@ namespace graph {
 			// ATTRIBUTES
 			// MEMBERS
 				unweighted_graph();
+				~unweighted_graph();
 				virtual void pureVirtual() = 0;
 		};
 		template<typename node_data = unsigned int, typename path_weight = unsigned int>
@@ -279,6 +302,7 @@ namespace graph {
 			// ATTRIBUTES
 			// MEMBERS
 				mixed_weight_graph();
+				~mixed_weight_graph();
 				virtual void pureVirtual() = 0;
 		};
 	// graph subtypes
