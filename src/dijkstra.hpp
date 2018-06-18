@@ -41,9 +41,9 @@ namespace dijkstra_algorithm {
 			private:
 				std::shared_ptr<node> firstNode;
 				/*
-				 * Collection of unique nodes (based on their index), iterable and direct access through key value
+				 * Collection of unique vertices (based on their index), iterable and direct access through key value
 				*/
-				std::set<std::shared_ptr<node>/*, comparison*/> nodes;
+				std::set<std::shared_ptr<node>/*, comparison*/> vertices;
 				std::priority_queue<weight, std::vector<weight>/*, comparison*/> weights;
 				std::map<link, weight/*, comparison*/> paths; // assert(link.first < link.second)
 				AbstractGraphContainer* graphContainer; // adjacency list
@@ -51,8 +51,8 @@ namespace dijkstra_algorithm {
 			public:
 				// constructors
 					Dijkstra()/* = delete*/ {} // delete default constructor ?
-					Dijkstra(const Dijkstra& other) : nodes(other.nodes), paths(other.paths) {}
-					Dijkstra(Dijkstra&& other) noexcept : nodes(other.nodes), paths(other.paths) { /* destroy eventual dynamic data */ }
+					Dijkstra(const Dijkstra& other) : vertices(other.vertices), paths(other.paths) {}
+					Dijkstra(Dijkstra&& other) noexcept : vertices(other.vertices), paths(other.paths) { /* destroy eventual dynamic data */ }
 				// destructors
 					~Dijkstra() noexcept/* = default*/ {} // maybe not need to redefine
 				// operators
@@ -66,7 +66,7 @@ namespace dijkstra_algorithm {
 						if(this == &other)
 							return *this;
 
-						nodes = other.nodes;
+						vertices = other.vertices;
 						paths = other.paths;
 						/* destroy eventual dynamic data */
 
@@ -82,7 +82,7 @@ namespace dijkstra_algorithm {
 				*/
 				void init() {
 					/*
-					for(auto const& [key, val] : nodes)
+					for(auto const& [key, val] : vertices)
 						val.get() = numeric_limits<int>::max();
 					*/
 					firstNode->second = 0;
@@ -126,7 +126,7 @@ namespace dijkstra_algorithm {
 				*/
 				void mainAlgorithm() {
 					init();
-					while(nodes.size()) {
+					while(vertices.size()) {
 
 					}
 				}

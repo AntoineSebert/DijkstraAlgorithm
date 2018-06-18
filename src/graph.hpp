@@ -35,47 +35,47 @@ namespace graph {
 			UNIQUE,
 			NOT_UNIQUE
 		};
-		template<typename node_data>
+		template<typename vertex_data>
 		class abstract_graph;
-		template<typename node_data>
+		template<typename vertex_data>
 		class oriented_graph;
-		template<typename node_data>
+		template<typename vertex_data>
 		class unoriented_graph;
-		template<typename node_data>
+		template<typename vertex_data>
 		class mixed_orientation_graph;
-		template<typename node_data, typename path_weight>
+		template<typename vertex_data, typename edge_weight>
 		class weighted_graph;
-		template<typename node_data>
+		template<typename vertex_data>
 		class unweighted_graph;
-		template<typename node_data, typename path_weight>
+		template<typename vertex_data, typename edge_weight>
 		class mixed_weight_graph;
-		template<typename node_data, typename path_weight>
+		template<typename vertex_data, typename edge_weight>
 		class oriented_weighted_graph;
-		template<typename node_data>
+		template<typename vertex_data>
 		class oriented_unweighted_graph;
-		template<typename node_data, typename path_weight>
+		template<typename vertex_data, typename edge_weight>
 		class oriented_mixed_weight_graph;
-		template<typename node_data, typename path_weight>
+		template<typename vertex_data, typename edge_weight>
 		class unoriented_weighted_graph;
-		template<typename node_data>
+		template<typename vertex_data>
 		class unoriented_unweighted_graph;
-		template<typename node_data, typename path_weight>
+		template<typename vertex_data, typename edge_weight>
 		class unoriented_mixed_weight_graph;
-		template<typename node_data, typename path_weight>
+		template<typename vertex_data, typename edge_weight>
 		class mixed_orientation_weighted_graph;
-		template<typename node_data>
+		template<typename vertex_data>
 		class mixed_orientation_unweighted_graph;
-		template<typename node_data, typename path_weight>
+		template<typename vertex_data, typename edge_weight>
 		class mixed_orientation_mixed_weight_graph;
-	template<typename node_data = unsigned int>
+	template<typename vertex_data = unsigned int>
 	class abstract_graph {
 		// ATTRIBUTES
 			template <typename T = unsigned int>
 			using abstract_link = std::pair<T, T>;
 			// put in a particular header and transform it into a named tuple
-			class abstract_node {
-				node_data value;
-				abstract_node();
+			class abstract_vertex {
+				vertex_data value;
+				abstract_vertex();
 				virtual void pureVirtual() = 0;
 			};
 			std::any container;
@@ -83,33 +83,34 @@ namespace graph {
 		// MEMBERS
 			// default constructor
 				abstract_graph() = delete;
-				abstract_graph(underlying_container container_type, uniqueness uniqueness) {
-					if(container_type == LIST) {
-						container = (uniqueness == UNIQUE ? std::set<std::any> : std::vector<std::any>);
-						/*
-						if(uniqueness == UNIQUE)
-							container = std::set<std::any>;
-						else
-							container = std::vector<std::any>;
-						*/
-					}
+				abstract_graph(underlying_container container_type, uniqueness vertices_uniqueness) {
+					if(container_type == LIST)
+						container = (vertices_uniqueness == UNIQUE ? std::map<vertex_data, std::set<std::any>> : std::multimap<vertex_data, std::multiset<std::any>>);
 					else {
-
+						container = (vertices_uniqueness == UNIQUE ? : );
 					}
+					++instances;
 				}
 			// copy constructor
-				abstract_graph(const abstract_graph& rhs) : container(rhs.container) {}
+				abstract_graph(const abstract_graph& rhs) : container(rhs.container) {
+					++instances;
+				}
 			// move constructor
-				abstract_graph(abstract_graph&& rhs) noexcept : container(rhs.container) { rhs.container.reset(); }
+				abstract_graph(abstract_graph&& rhs) noexcept : container(rhs.container) {
+					rhs.container.reset();
+					++instances;
+				}
 			// destructor
-				virtual ~abstract_graph() noexcept = 0;
+				~abstract_graph() noexcept {
+					--instances;
+				}
 			// operators
 				// arithmetic operators
 					virtual abstract_graph& operator=(const abstract_graph& rhs) = 0;
-					virtual abstract_graph* operator+(const abstract_node& rhs) = 0;		// add node
-					virtual abstract_graph* operator-(const abstract_node& rhs) = 0;		// remove node if it exist
-					virtual abstract_graph* operator+(const abstract_graph& rhs) = 0;		// add nodes and paths
-					virtual abstract_graph* operator-(const abstract_graph& rhs) = 0;		// remove nodes and paths if they exist
+					virtual abstract_graph* operator+(const abstract_vertex& rhs) = 0;		// add vertex
+					virtual abstract_graph* operator-(const abstract_vertex& rhs) = 0;		// remove vertex if it exist
+					virtual abstract_graph* operator+(const abstract_graph& rhs) = 0;		// add vertices and edges
+					virtual abstract_graph* operator-(const abstract_graph& rhs) = 0;		// remove vertices and edges if they exist
 					/* nonsenses
 					virtual abstract_graph* operator+() = delete;
 					virtual abstract_graph* operator-() = delete;
@@ -127,21 +128,21 @@ namespace graph {
 					virtual void operator|(const abstract_graph& rhs) = 0;					// union
 					virtual void operator^(const abstract_graph& rhs) = 0;					// difference
 					virtual void operator<<(const abstract_graph& rhs) = 0;					// output
-					virtual void operator>>(const abstract_node& rhs) = 0;					// input
+					virtual void operator>>(const abstract_vertex& rhs) = 0;					// input
 				// comparison/relational operators
-					virtual bool operator==(const abstract_graph& rhs) = 0;					// compare nodes and paths
-					virtual bool operator!=(const abstract_graph& rhs) = 0;					// compare nodes and paths
-					virtual bool operator!=(const abstract_graph& rhs) const = 0;			// compare nodes and paths
-					virtual bool operator>(const abstract_graph& rhs) const = 0;			// compare number of nodes
-					virtual bool operator<(const abstract_graph& rhs) const = 0;			// compare number of nodes
-					virtual bool operator>=(const abstract_graph& rhs) const = 0;			// compare number of nodes
-					virtual bool operator<=(const abstract_graph& rhs) const = 0;			// compare number of nodes
-					//virtual bool operator<=>(const abstract_graph& rhs) const = 0;		// compare number of nodes (not available yet) ( ͡° ͜ʖ ͡°)
+					virtual bool operator==(const abstract_graph& rhs) = 0;					// compare vertices and edges
+					virtual bool operator!=(const abstract_graph& rhs) = 0;					// compare vertices and edges
+					virtual bool operator!=(const abstract_graph& rhs) const = 0;			// compare vertices and edges
+					virtual bool operator>(const abstract_graph& rhs) const = 0;			// compare number of vertices
+					virtual bool operator<(const abstract_graph& rhs) const = 0;			// compare number of vertices
+					virtual bool operator>=(const abstract_graph& rhs) const = 0;			// compare number of vertices
+					virtual bool operator<=(const abstract_graph& rhs) const = 0;			// compare number of vertices
+					//virtual bool operator<=>(const abstract_graph& rhs) const = 0;		// compare number of vertices (not available yet) ( ͡° ͜ʖ ͡°)
 				// compound assignment operators
-					virtual abstract_graph& operator+=(const abstract_node& rhs) = 0;		// add node
-					virtual abstract_graph& operator-=(const abstract_node& rhs) = 0;		// remove node if it exist
-					virtual abstract_graph& operator+=(const abstract_graph& rhs) = 0;		// add nodes and paths
-					virtual abstract_graph& operator-=(const abstract_graph& rhs) = 0;		// remove nodes and paths if they exist
+					virtual abstract_graph& operator+=(const abstract_vertex& rhs) = 0;		// add vertex
+					virtual abstract_graph& operator-=(const abstract_vertex& rhs) = 0;		// remove vertex if it exist
+					virtual abstract_graph& operator+=(const abstract_graph& rhs) = 0;		// add vertices and edges
+					virtual abstract_graph& operator-=(const abstract_graph& rhs) = 0;		// remove vertices and edges if they exist
 					/* nonsenses
 					virtual abstract_graph& operator*=(abstract_graph rhs) = delete;
 					virtual abstract_graph& operator/=(abstract_graph rhs) = delete;
@@ -157,7 +158,7 @@ namespace graph {
 					virtual bool operator&&(const abstract_graph& rhs) = 0;					// check if the two graphs are not empty
 					virtual bool operator||(const abstract_graph& rhs) = 0;					// check if one of the two graphs is not empty
 				// member and pointer operators
-					virtual abstract_node& operator[](unsigned int index) = 0;				// unsecure element access
+					virtual abstract_vertex& operator[](unsigned int index) = 0;				// unsecure element access
 					std::any& operator*() = delete;											// nonsense
 					abstract_graph& operator&() = delete;									// possible optimization
 					virtual std::any& operator->() = 0;										// access underlying container
@@ -253,27 +254,28 @@ namespace graph {
 				virtual void get_allocator() = 0;
 	};
 	// abstract graph orientation
-		template<typename node_data = unsigned int>
-		class oriented_graph : public abstract_graph<node_data> {
+		template<typename vertex_data = unsigned int>
+		class oriented_graph : public abstract_graph<vertex_data> {
 			// ATTRIBUTES
 			// MEMBERS
 				public:
 					oriented_graph() = delete;
-					oriented_graph(underlying_container container_type, uniqueness uniqueness) : abstract_graph(container_type, uniqueness) {}
+					oriented_graph(underlying_container container_type, uniqueness vertices_uniqueness)
+						: abstract_graph(container_type, vertices_uniqueness) {}
 					~oriented_graph() {}
 				private:
 					virtual void pureVirtual() = 0;
 		};
-		template<typename node_data = unsigned int>
-		class unoriented_graph : public abstract_graph<node_data> {
+		template<typename vertex_data = unsigned int>
+		class unoriented_graph : public abstract_graph<vertex_data> {
 			// ATTRIBUTES
 			// MEMBERS
 				unoriented_graph();
 				~unoriented_graph();
 				virtual void pureVirtual() = 0;
 		};
-		template<typename node_data = unsigned int>
-		class mixed_orientation_graph : public oriented_graph<node_data>, public unoriented_graph<node_data> {
+		template<typename vertex_data = unsigned int>
+		class mixed_orientation_graph : public oriented_graph<vertex_data>, public unoriented_graph<vertex_data> {
 			// ATTRIBUTES
 			// MEMBERS
 				mixed_orientation_graph();
@@ -281,24 +283,24 @@ namespace graph {
 				virtual void pureVirtual() = 0;
 		};
 	// abstract graph weight
-		template<typename node_data = unsigned int, typename path_weight = unsigned int>
-		class weighted_graph : public abstract_graph<node_data> {
+		template<typename vertex_data = unsigned int, typename edge_weight = unsigned int>
+		class weighted_graph : public abstract_graph<vertex_data> {
 			// ATTRIBUTES
 			// MEMBERS
 				weighted_graph();
 				~weighted_graph();
 				virtual void pureVirtual() = 0;
 		};
-		template<typename node_data = unsigned int>
-		class unweighted_graph : public abstract_graph<node_data> {
+		template<typename vertex_data = unsigned int>
+		class unweighted_graph : public abstract_graph<vertex_data> {
 			// ATTRIBUTES
 			// MEMBERS
 				unweighted_graph();
 				~unweighted_graph();
 				virtual void pureVirtual() = 0;
 		};
-		template<typename node_data = unsigned int, typename path_weight = unsigned int>
-		class mixed_weight_graph : public weighted_graph<typename node_data, typename path_weight>, public unweighted_graph<node_data> {
+		template<typename vertex_data = unsigned int, typename edge_weight = unsigned int>
+		class mixed_weight_graph : public weighted_graph<typename vertex_data, typename edge_weight>, public unweighted_graph<vertex_data> {
 			// ATTRIBUTES
 			// MEMBERS
 				mixed_weight_graph();
@@ -306,8 +308,8 @@ namespace graph {
 				virtual void pureVirtual() = 0;
 		};
 	// graph subtypes
-		template<typename node_data = unsigned int, typename path_weight = unsigned int>
-		class oriented_weighted_graph : public oriented_graph<node_data>, public weighted_graph<node_data, path_weight> {
+		template<typename vertex_data = unsigned int, typename edge_weight = unsigned int>
+		class oriented_weighted_graph : public oriented_graph<vertex_data>, public weighted_graph<vertex_data, edge_weight> {
 			// ATTRIBUTES
 			// MEMBERS
 				public:
@@ -316,8 +318,8 @@ namespace graph {
 				private:
 					void pureVirtual() {}
 		};
-		template<typename node_data = unsigned int>
-		class oriented_unweighted_graph : public oriented_graph<node_data>, public unweighted_graph<node_data> {
+		template<typename vertex_data = unsigned int>
+		class oriented_unweighted_graph : public oriented_graph<vertex_data>, public unweighted_graph<vertex_data> {
 			// ATTRIBUTES
 			// MEMBERS
 				public:
@@ -326,8 +328,8 @@ namespace graph {
 				private:
 					void pureVirtual() {}
 		};
-		template<typename node_data = unsigned int, typename path_weight = unsigned int>
-		class oriented_mixed_weight_graph : public oriented_graph<node_data>, public mixed_weight_graph<node_data, path_weight> {
+		template<typename vertex_data = unsigned int, typename edge_weight = unsigned int>
+		class oriented_mixed_weight_graph : public oriented_graph<vertex_data>, public mixed_weight_graph<vertex_data, edge_weight> {
 			// ATTRIBUTES
 			// MEMBERS
 				public:
@@ -336,8 +338,8 @@ namespace graph {
 				private:
 					void pureVirtual() {}
 		};
-		template<typename node_data = unsigned int, typename path_weight = unsigned int>
-		class unoriented_weighted_graph : public unoriented_graph<node_data>, public weighted_graph<node_data, path_weight> {
+		template<typename vertex_data = unsigned int, typename edge_weight = unsigned int>
+		class unoriented_weighted_graph : public unoriented_graph<vertex_data>, public weighted_graph<vertex_data, edge_weight> {
 			// ATTRIBUTES
 			// MEMBERS
 				public:
@@ -346,8 +348,8 @@ namespace graph {
 				private:
 					void pureVirtual() {}
 		};
-		template<typename node_data = unsigned int>
-		class unoriented_unweighted_graph : public unoriented_graph<node_data>, public unweighted_graph<node_data> {
+		template<typename vertex_data = unsigned int>
+		class unoriented_unweighted_graph : public unoriented_graph<vertex_data>, public unweighted_graph<vertex_data> {
 			// ATTRIBUTES
 			// MEMBERS
 				public:
@@ -356,8 +358,8 @@ namespace graph {
 				private:
 					void pureVirtual() {}
 		};
-		template<typename node_data = unsigned int, typename path_weight = unsigned int>
-		class unoriented_mixed_weight_graph : public unoriented_graph<node_data>, public mixed_weight_graph<node_data, path_weight> {
+		template<typename vertex_data = unsigned int, typename edge_weight = unsigned int>
+		class unoriented_mixed_weight_graph : public unoriented_graph<vertex_data>, public mixed_weight_graph<vertex_data, edge_weight> {
 			// ATTRIBUTES
 			// MEMBERS
 				public:
@@ -366,8 +368,8 @@ namespace graph {
 				private:
 					void pureVirtual() {}
 		};
-		template<typename node_data = unsigned int, typename path_weight = unsigned int>
-		class mixed_orientation_weighted_graph : public mixed_orientation_graph<node_data>, public weighted_graph<node_data, path_weight> {
+		template<typename vertex_data = unsigned int, typename edge_weight = unsigned int>
+		class mixed_orientation_weighted_graph : public mixed_orientation_graph<vertex_data>, public weighted_graph<vertex_data, edge_weight> {
 			// ATTRIBUTES
 			// MEMBERS
 				public:
@@ -376,8 +378,8 @@ namespace graph {
 				private:
 					void pureVirtual() {}
 		};
-		template<typename node_data = unsigned int>
-		class mixed_orientation_unweighted_graph : public mixed_orientation_graph<node_data>, public unweighted_graph<node_data> {
+		template<typename vertex_data = unsigned int>
+		class mixed_orientation_unweighted_graph : public mixed_orientation_graph<vertex_data>, public unweighted_graph<vertex_data> {
 			// ATTRIBUTES
 			// MEMBERS
 				public:
@@ -386,8 +388,8 @@ namespace graph {
 				private:
 					void pureVirtual() {}
 		};
-		template<typename node_data = unsigned int, typename path_weight = unsigned int>
-		class mixed_orientation_mixed_weight_graph : public mixed_orientation_graph<node_data>, public mixed_weight_graph<node_data, path_weight> {
+		template<typename vertex_data = unsigned int, typename edge_weight = unsigned int>
+		class mixed_orientation_mixed_weight_graph : public mixed_orientation_graph<vertex_data>, public mixed_weight_graph<vertex_data, edge_weight> {
 			// ATTRIBUTES
 			// MEMBERS
 				public:
