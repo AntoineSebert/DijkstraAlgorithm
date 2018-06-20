@@ -1,6 +1,6 @@
 ﻿/**
 * Graph Library
-* Copyright (c) 2014, Antoine Sébert antoine.sb@orange.fr, All rights reserved.
+* Copyright (c) 2018, Antoine Sébert antoine.sb@orange.fr, All rights reserved.
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -21,18 +21,145 @@
 
 #include <any>
 #include <map>
-#include <utility>
+#include <optional>
 #include <set>
-#include <typeinfo>
+#include <utility>
 #include <vector>
+#include <typeinfo>
 
 namespace graph {
-	template<class vertex_data, class edge_data>
+	enum node_uniqueness {
+		unique_nodes,
+		not_unique_nodes
+	};
+	enum path_uniqueness {
+		unique_paths,
+		not_unique_paths
+	};
+	enum orientation {
+		oriented,
+		unoriented,
+		mixed_orientation
+	};
+	enum weightness {
+		weighted,
+		unweighted,
+		mixed_weightness
+	};
+	// node_uniqueness: unique
+		// path_uniqueness: unique
+			// orientation: oriented
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_u_PU_u_oriented_weighted_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using NU_u_PU_u_oriented_unweighted_graph = std::map<vertex_data, std::set<std::map<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_u_PU_u_oriented_mixed_weightness_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// orientation: unoriented
+				// weightness: weighted
+
+				// weightness: unweighted
+
+				// weightness: mixed
+
+			// orientation: mixed
+				// weightness: weighted
+
+				// weightness: unweighted
+
+				// weightness: mixed
+
+		// path_uniqueness: not_unique
+			// orientation: oriented
+				// weightness: weighted
+
+				// weightness: unweighted
+
+				// weightness: mixed
+
+			// orientation: unoriented
+				// weightness: weighted
+
+				// weightness: unweighted
+
+				// weightness: mixed
+
+			// orientation: mixed
+				// weightness: weighted
+
+				// weightness: unweighted
+
+				// weightness: mixed
+
+	// node_uniqueness: not_unique
+		// path_uniqueness: unique
+			// orientation: oriented
+				// weightness: weighted
+
+				// weightness: unweighted
+
+				// weightness: mixed
+
+			// orientation: unoriented
+				// weightness: weighted
+
+				// weightness: unweighted
+
+				// weightness: mixed
+
+			// orientation: mixed
+				// weightness: weighted
+
+				// weightness: unweighted
+
+				// weightness: mixed
+
+		// path_uniqueness: not_unique
+			// orientation: oriented
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_nu_PU_nu_oriented_weighted_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using NU_nu_PU_nu_oriented_unweighted_graph = std::multimap<vertex_data, std::multiset<std::multimap<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_nu_PU_nu_oriented_mixed_weightness_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// orientation: unoriented
+				// weightness: weighted
+					/*
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_nu_PU_nu_unoriented_weighted_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+					*/
+				// weightness: unweighted
+
+				// weightness: mixed
+
+			// orientation: mixed
+				// weightness: weighted
+
+				// weightness: unweighted
+
+				// weightness: mixed
+
+	// node_uniqueness: not_unique, path_uniqueness: not_unique, weightess: weighted, orientation: oriented
+	template<class vertex_data = unsigned int, class edge_data = unsigned int>
+	using unique_oriented_weighted_graph = std::map<vertex_data, std::multimap<std::map<std::any, std::any>::const_reference, edge_data>>;
+	/*
+	template<class vertex_index = unsigned int>
+	using unoriented_unweighted_graph = std::
+*/
+	//using unoriented_unweighted_graph = std::multiset<std::multiset<unoriented_unweighted_graph::const_iterator>>;
+
+	template<class vertex_data = unsigned int, class edge_data = unsigned int>
 	class abstract_graph {
 		// ATTRIBUTES
-			std::map<vertex_data, std::set<std::pair<std::map::const_iterator, edge_data>>> container;
+			// emplacements non contigus en mémoire, itérateurs restent valides en insertion et en suppression
+			NU_nu_PU_nu_oriented_weighted_graph<vertex_data, edge_data> container;
 			static unsigned int instances;
-			typename vertex_data_type = decltype(vertex_data), edge_data_type = decltype(edge_data);
 		// MEMBERS
 			// default constructor
 				abstract_graph() { ++instances; }
@@ -53,8 +180,7 @@ namespace graph {
 						}
 					// add vertices and edges
 						abstract_graph* operator+(const abstract_graph& rhs) {
-							container.insert(rhs.container.begin(), rhs.container.end());
-							// check the edges
+							container.merge(rhs.container);
 							return *this;
 						}
 					// remove vertices and edges if they exist
@@ -65,16 +191,49 @@ namespace graph {
 							return *this;
 						}
 				// bitwise operators
-					virtual void operator~() = 0;												// invert links orientation in oriented graphs
-					virtual void operator&(const abstract_graph& rhs) = 0;						// intersection
-					virtual void operator|(const abstract_graph& rhs) = 0;						// union
-					virtual void operator^(const abstract_graph& rhs) = 0;						// difference
-					virtual void operator<<(const abstract_graph& rhs) = 0;						// output
-					virtual void operator>>(const vertex_data& rhs) = 0;						// input
+					virtual void operator~() = 0;														// invert links orientation in oriented graphs
+					virtual void operator&(const abstract_graph& rhs) = 0;								// intersection
+					virtual void operator|(const abstract_graph& rhs) = 0;								// union
+					virtual void operator^(const abstract_graph& rhs) = 0;								// difference
 				// comparison/relational operators
-					virtual bool operator==(const abstract_graph& rhs) = 0;						// compare vertices and edges
-					virtual bool operator!=(const abstract_graph& rhs) = 0;						// compare vertices and edges
-					virtual bool operator!=(const abstract_graph& rhs) const = 0;				// compare vertices and edges
+					// compare vertices and edges
+						bool operator==(const abstract_graph& rhs) {
+							// check if size of the containers is the same
+							if(container.size() != rhs.container.size())
+								return false;
+							// check if number of keys is the same
+							if(std::set<vertex_data> keys_set(container), keys_set_rhs(rhs.container);  keys_set.size() != keys_set_rhs.size())
+								return false;
+							// check if number of each key is the same
+							for(const auto& element : keys_set) {
+								if(container.count(element) != rhs.container.count(element))
+									return false;
+							}
+							// iterate through edges
+							auto it_rhs = rhs.container.begin();
+							for(auto it = container.cbegin(); it != container.end(); ++it) {
+								// check if size of the edges containers is the same
+								if(it->second.size() != it_rhs->second.size())
+									return false;
+
+
+								// check if number of keys is the same
+								if(std::set<vertex_data> keys_set(container), keys_set_rhs(rhs.container);  keys_set.size() != keys_set_rhs.size())
+									return false;
+								// check if number of each key is the same
+								for(const auto& element : keys_set) {
+									if(container.count(element) != rhs.container.count(element))
+										return false;
+								}
+
+								// check if the weight is the same
+
+								++it_rhs;
+							}
+							return true;
+						}
+					// compare vertices and edges
+						bool operator!=(const abstract_graph& rhs) { return !(this == rhs); }
 					// compare number of vertices
 					virtual bool operator>(const abstract_graph& rhs) const { return container.size() > rhs.container.size(); }
 					// compare number of vertices
@@ -84,45 +243,20 @@ namespace graph {
 					// compare number of vertices
 					virtual bool operator<=(const abstract_graph& rhs) const { return !(this > rhs); }
 					// compare number of vertices
-					//virtual bool operator<=>(const abstract_graph& rhs) const {}				// (C++20) ( ͡° ͜ʖ ͡°)
+					//virtual bool operator<=>(const abstract_graph& rhs) const {}						// (C++20) ( ͡° ͜ʖ ͡°)
 				// compound assignment operators
-					virtual abstract_graph& operator+=(const abstract_graph& rhs) = 0;			// add vertices and edges
-					virtual abstract_graph& operator-=(const abstract_graph& rhs) = 0;			// remove vertices and edges if they exist
-					virtual abstract_graph& operator&=(const abstract_graph& rhs) = 0;			// intersection
-					virtual abstract_graph& operator|=(const abstract_graph& rhs) = 0;			// union
-					virtual abstract_graph& operator^=(const abstract_graph& rhs) = 0;			// difference
+					virtual abstract_graph& operator+=(const abstract_graph& rhs) = 0;					// add vertices and edges
+					virtual abstract_graph& operator-=(const abstract_graph& rhs) = 0;					// remove vertices and edges if they exist
+					virtual abstract_graph& operator&=(const abstract_graph& rhs) = 0;					// intersection
+					virtual abstract_graph& operator|=(const abstract_graph& rhs) = 0;					// union
+					virtual abstract_graph& operator^=(const abstract_graph& rhs) = 0;					// difference
 				// logical operators
-					virtual bool operator!() = 0;												// check if empty
-					virtual bool operator&&(const abstract_graph& rhs) = 0;						// check if the two graphs are not empty
-					virtual bool operator||(const abstract_graph& rhs) = 0;						// check if one of the two graphs is not empty
-				// member and pointer operators
-					virtual vertex_data& operator[](unsigned int index) = 0;					// unsecure element access
-					std::any& operator*() = delete;												// nonsense
-					abstract_graph& operator&() = delete;										// possible optimization
-					virtual std::any& operator->() = 0;											// access underlying container
-					const void* operator->*(const abstract_graph& rhs) = delete;				// nonsense
-				// other operators
-					void operator()(std::any rhs, ...) = delete;								// could not find a good utility of this
-					abstract_graph& operator,(const abstract_graph& rhs) = delete;				// nonsense
-					//std::any operator"" _literal(abstract_graph) = delete;					// could not find a good utility of this + throw errors
-
-					virtual explicit operator oriented_graph<std::any>() = 0;
-					virtual explicit operator unoriented_graph<std::any>() = 0;
-					virtual explicit operator mixed_orientation_graph<std::any>() = 0;
-
-					virtual explicit operator weighted_graph<std::any, std::any>() = 0;
-					virtual explicit operator unweighted_graph<std::any>() = 0;
-					virtual explicit operator mixed_weight_graph<std::any, std::any>() = 0;
-
-					virtual explicit operator oriented_weighted_graph<std::any, std::any>() = 0;
-					virtual explicit operator oriented_unweighted_graph<std::any>() = 0;
-					virtual explicit operator oriented_mixed_weight_graph<std::any, std::any>() = 0;
-					virtual explicit operator unoriented_weighted_graph<std::any, std::any>() = 0;
-					virtual explicit operator unoriented_unweighted_graph<std::any>() = 0;
-					virtual explicit operator unoriented_mixed_weight_graph<std::any, std::any>() = 0;
-					virtual explicit operator mixed_orientation_weighted_graph<std::any, std::any>() = 0;
-					virtual explicit operator mixed_orientation_unweighted_graph<std::any>() = 0;
-					virtual explicit operator mixed_orientation_mixed_weight_graph<std::any, std::any>() = 0;
+					// check if empty
+					bool operator!() { return container.empty(); }
+					// check if the two graphs are not empty
+					bool operator&&(const abstract_graph& rhs) { return !(container.empty() || rhs.container.empty()); }
+					// check if one of the two graphs is not empty
+					bool operator||(const abstract_graph& rhs) { return !(container.empty() && rhs.container.empty()); }
 			/*
 			The basic operations provided by a graph data structure G usually include:
 				adjacent(x, y): tests whether there is an edge from the vertex x to the vertex y;
@@ -137,53 +271,6 @@ namespace graph {
 			Structures that associate values to the edges usually also provide:
 				get_edge_value(x, y): returns the value associated with the edge (x, y);
 				set_edge_value(x, y, v): sets the value associated with the edge (x, y) to v.
-			*/
-			// iterators
-				auto begin() const noexcept { return container.begin(); }
-				auto cbegin() const noexcept { return container.cbegin();  }
-				auto end() const noexcept { return container.end();  }
-				auto cend() const noexcept { return container.cend(); }
-				auto rbegin() const noexcept { return container.rbegin(); }
-				auto crbegin() const noexcept { return container.crbegin(); }
-				auto rend() const noexcept { return container.rend(); }
-				auto crend() const noexcept { return container.crend(); }
-			// element access
-				const vertex_data& at(const vertex_data& key) const {
-					try {
-						return container.at(key);
-					}
-					catch(std::out_of_range e) {
-						e.what();
-					}
-					return nullptr;
-				}
-				// subscript operator already defined in members/operators/member_and_pointer_operators
-			// capacity
-				auto empty() { return container.empty(); }
-				auto size() { return container.size(); }
-				auto max_size() { return container.max_size(); }
-			/*
-			// modifiers
-				virtual void clear() = 0;
-				virtual void insert() = 0;
-				virtual void insert_or_assign() = 0;
-				virtual void emplace() = 0;
-				virtual void emplace_hint() = 0;
-				virtual void try_emplace() = 0;
-				virtual void erase() = 0;
-				virtual void swap() = 0;
-				virtual void merge() = 0;
-				virtual void extract() = 0;
-			// lookup
-				virtual void count() = 0;
-				virtual void find() = 0;
-				virtual void contains() = 0;
-				virtual void lower_bound() = 0;
-				virtual void upper_bound() = 0;
-				virtual void equal_range() = 0;
-			// observers
-				virtual void key_comp() = 0;
-				virtual void value_comp() = 0;
 			*/
 	};
 }
