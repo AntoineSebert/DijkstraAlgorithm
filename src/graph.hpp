@@ -29,128 +29,132 @@
 
 namespace graph {
 	// data types are created at compile-time, so I have to hard code them
-	// node_uniqueness: unique
-		// path_uniqueness: unique
-			// vertex_signifiance: significative
+
+	// vertex_signifiance: significative
+		// node_uniqueness: unique
+			// path_uniqueness: unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_u_PU_u_VS_s_weighted_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, edge_data>>;
+					using VS_s_NU_u_PU_u_W_w_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using NU_u_PU_u_VS_s_unweighted_graph = std::map<vertex_data, std::set<std::map<std::any, std::any>::const_reference>>;
+					using VS_sNU_u_PU_u_W_uw_graph = std::map<vertex_data, std::set<std::map<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_u_PU_u_VS_s_mixed_weightness_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-			// vertex_signifiance: not_significative
-				// weightness: weighted
-					template<class edge_data = unsigned int>
-					using NU_u_PU_u_VS_ns_weighted_graph = std::set<std::map<std::set<std::any>::const_reference, edge_data>>;
-				// weightness: unweighted
-					using NU_u_PU_u_VS_ns_unweighted_graph = std::set<std::set<std::set<std::any>::const_reference>>;
-				// weightness: mixed
-					template<class edge_data = unsigned int>
-					using NU_u_PU_u_VS_ns_mixed_weightness_graph = std::set<std::map<std::set<std::any>::const_reference, std::optional<edge_data>>>;
-			// vertex_signifiance: mixed_signifiance
+					using VS_sNU_u_PU_u_W_mw_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// path_uniqueness: not_unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_u_PU_u_VS_ms_weighted_graph = std::map<std::optional<vertex_data>, std::map<std::map<std::any, std::any>::const_reference, edge_data>>;
+					using VS_s_NU_u_PU_nu_W_w_graph = std::map<vertex_data, std::multimap<std::map<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using NU_u_PU_u_VS_ms_unweighted_graph = std::map<std::optional<vertex_data>, std::set<std::map<std::any, std::any>::const_reference>>;
+					using VS_s_NU_u_PU_nu_W_uw_graph = std::map<vertex_data, std::multiset<std::map<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_u_PU_u_VS_ms_mixed_weightness_graph = std::map<std::optional<vertex_data>, std::map<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-		// path_uniqueness: not_unique
-			// vertex_signifiance: significative
+					using VS_s_NU_u_PU_nu_W_mw_graph = std::map<vertex_data, std::multimap<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+		// node_uniqueness: not_unique
+			// path_uniqueness: unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_u_PU_nu_VS_s_weighted_graph = std::map<vertex_data, std::multimap<std::map<std::any, std::any>::const_reference, edge_data>>;
+					using VS_s_NU_nu_PU_u_W_w_graph = std::multimap<vertex_data, std::map<std::multimap<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using NU_u_PU_nu_VS_s_unweighted_graph = std::map<vertex_data, std::multiset<std::map<std::any, std::any>::const_reference>>;
+					using VS_s_NU_nu_PU_u_W_uw_graph = std::multimap<vertex_data, std::set<std::multimap<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_u_PU_nu_VS_s_mixed_weightness_graph = std::map<vertex_data, std::multimap<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-			// vertex_signifiance: not_significative
-				// weightness: weighted
-					template<class edge_data = unsigned int>
-					using NU_u_PU_nu_VS_ns_weighted_graph = std::set<std::multimap<std::set<std::any>::const_reference, edge_data>>;
-				// weightness: unweighted
-					using NU_u_PU_nu_VS_ns_unweighted_graph = std::set<std::multiset<std::set<std::any>::const_reference>>;
-				// weightness: mixed
-					template<class edge_data = unsigned int>
-					using NU_u_PU_nu_VS_ns_mixed_weightness_graph = std::set<std::multimap<std::set<std::any>::const_reference, std::optional<edge_data>>>;
-			// vertex_signifiance: mixed_signifiance
+					using VS_s_NU_nu_PU_u_W_mw_graph = std::multimap<vertex_data, std::map<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// path_uniqueness: not_unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_u_PU_nu_VS_ms_weighted_graph = std::map<std::optional<vertex_data>, std::multimap<std::map<std::any, std::any>::const_reference, edge_data>>;
+					using VS_s_NU_nu_PU_nu_W_w_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using NU_u_PU_nu_VS_ms_unweighted_graph = std::map<std::optional<vertex_data>, std::multiset<std::map<std::any, std::any>::const_reference>>;
+					using VS_s_NU_nu_PU_nu_W_uw_graph = std::multimap<vertex_data, std::multiset<std::multimap<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_u_PU_nu_VS_ms_mixed_weightness_graph = std::map<std::optional<vertex_data>, std::multimap<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-	// node_uniqueness: not_unique
-		// path_uniqueness: unique
-			// vertex_signifiance: significative
-				// weightness: weighted
-					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_nu_PU_u_VS_s_weighted_graph = std::multimap<vertex_data, std::map<std::multimap<std::any, std::any>::const_reference, edge_data>>;
-				// weightness: unweighted
-					template<class vertex_data = unsigned int>
-					using NU_nu_PU_u_VS_s_unweighted_graph = std::multimap<vertex_data, std::set<std::multimap<std::any, std::any>::const_reference>>;
-				// weightness: mixed
-					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_nu_PU_u_VS_s_mixed_weightness_graph = std::multimap<vertex_data, std::map<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-			// vertex_signifiance: not_significative
+					using VS_s_NU_nu_PU_nu_W_mw_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+	// vertex_signifiance: not_significative
+		// node_uniqueness: unique
+			// path_uniqueness: unique
 				// weightness: weighted
 					template<class edge_data = unsigned int>
-					using NU_nu_PU_u_VS_ns_weighted_graph = std::multiset<std::map<std::multiset<std::any>::const_reference, edge_data>>;
+					using VS_ns_NU_u_PU_u_W_w_graph = std::set<std::map<std::set<std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
-					using NU_nu_PU_u_VS_ns_unweighted_graph = std::multiset<std::set<std::multiset<std::any>::const_reference>>;
+					using VS_ns_NU_u_PU_u_W_uw_graph = std::set<std::set<std::set<std::any>::const_reference>>;
 				// weightness: mixed
 					template<class edge_data = unsigned int>
-					using NU_nu_PU_u_VS_ns_mixed_weightness_graph = std::multiset<std::map<std::multiset<std::any>::const_reference, std::optional<edge_data>>>;
-			// vertex_signifiance: mixed_signifiance
-				// weightness: weighted
-					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_nu_PU_u_VS_ms_weighted_graph = std::multimap<std::optional<vertex_data>, std::map<std::multimap<std::any, std::any>::const_reference, edge_data>>;
-				// weightness: unweighted
-					template<class vertex_data = unsigned int>
-					using NU_nu_PU_u_VS_ms_unweighted_graph = std::multimap<std::optional<vertex_data>, std::set<std::multimap<std::any, std::any>::const_reference>>;
-				// weightness: mixed
-					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_nu_PU_u_VS_ms_mixed_weightness_graph = std::multimap<std::optional<vertex_data>, std::map<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-		// path_uniqueness: not_unique
-			// vertex_signifiance: significative
-				// weightness: weighted
-					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_nu_PU_nu_VS_s_weighted_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
-				// weightness: unweighted
-					template<class vertex_data = unsigned int>
-					using NU_nu_PU_nu_VS_s_unweighted_graph = std::multimap<vertex_data, std::multiset<std::multimap<std::any, std::any>::const_reference>>;
-				// weightness: mixed
-					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_nu_PU_nu_VS_s_mixed_weightness_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-			// vertex_signifiance: not_significative
+					using VS_ns_NU_u_PU_u_W_mw_graph = std::set<std::map<std::set<std::any>::const_reference, std::optional<edge_data>>>;
+			// path_uniqueness: not_unique
 				// weightness: weighted
 					template<class edge_data = unsigned int>
-					using NU_nu_PU_nu_VS_ns_weighted_graph = std::multiset<std::multimap<std::multiset<std::any>::const_reference, edge_data>>;
+					using VS_ns_NU_u_PU_nu_W_w_graph = std::set<std::multimap<std::set<std::any>::const_reference, edge_data>>;
+					// weightness: unweighted
+					using VS_ns_NU_u_PU_nu_W_uw_graph = std::set<std::multiset<std::set<std::any>::const_reference>>;
+					// weightness: mixed
+					template<class edge_data = unsigned int>
+					using VS_ns_NU_u_PU_nu_W_mw_graph = std::set<std::multimap<std::set<std::any>::const_reference, std::optional<edge_data>>>;
+		// node_uniqueness: not_unique (if all the nodes are indexed based on their position in the container, is this part really necessary ?)
+			// path_uniqueness: unique
+				// weightness: weighted
+					template<class edge_data = unsigned int>
+					using VS_ns_NU_nu_PU_u_W_w_graph = std::multiset<std::map<std::multiset<std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
-					using NU_nu_PU_nu_VS_ns_unweighted_graph = std::multiset<std::multiset<std::multiset<std::any>::const_reference>>;
+					using VS_ns_NU_nu_PU_u_W_uw_graph = std::multiset<std::set<std::multiset<std::any>::const_reference>>;
 				// weightness: mixed
 					template<class edge_data = unsigned int>
-					using NU_nu_PU_nu_VS_ns_mixed_weightness_graph = std::multiset<std::multimap<std::multiset<std::any>::const_reference, std::optional<edge_data>>>;
-			// vertex_signifiance: mixed_signifiance
+					using VS_ns_NU_nu_PU_u_W_mw_graph = std::multiset<std::map<std::multiset<std::any>::const_reference, std::optional<edge_data>>>;
+			// path_uniqueness: not_unique
+				// weightness: weighted
+					template<class edge_data = unsigned int>
+					using VS_ns_NU_nu_PU_nu_W_w_graph = std::multiset<std::multimap<std::multiset<std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					using VS_ns_NU_nu_PU_nu_W_uw_graph = std::multiset<std::multiset<std::multiset<std::any>::const_reference>>;
+				// weightness: mixed
+					template<class edge_data = unsigned int>
+					using VS_ns_NU_nu_PU_nu_W_mw_graph = std::multiset<std::multimap<std::multiset<std::any>::const_reference, std::optional<edge_data>>>;
+	// vertex_signifiance: mixed_signifiance
+		// node_uniqueness: unique
+			// path_uniqueness: unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_nu_PU_nu_VS_ms_weighted_graph = std::multimap<std::optional<vertex_data>, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+					using VS_ms_NU_u_PU_u_W_w_graph = std::map<std::optional<vertex_data>, std::map<std::map<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using NU_nu_PU_nu_VS_ms_unweighted_graph = std::multimap<std::optional<vertex_data>, std::multiset<std::multimap<std::any, std::any>::const_reference>>;
+					using VS_ms_NU_u_PU_u_W_uw_graph = std::map<std::optional<vertex_data>, std::set<std::map<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_nu_PU_nu_VS_ms_mixed_weightness_graph = std::multimap<std::optional<vertex_data>, std::multimap<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+					using VS_ms_NU_u_PU_u_W_mw_graph = std::map<std::optional<vertex_data>, std::map<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// path_uniqueness: not_unique
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using VS_ms_NU_u_PU_nu_W_w_graph = std::map<std::optional<vertex_data>, std::multimap<std::map<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using VS_ms_NU_u_PU_nu_W_uw_graph = std::map<std::optional<vertex_data>, std::multiset<std::map<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using VS_ms_NU_u_PU_nu_W_mw_graph = std::map<std::optional<vertex_data>, std::multimap<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+		// node_uniqueness: not_unique
+			// path_uniqueness: unique
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using VS_ms_NU_nu_PU_u_W_w_graph = std::multimap<std::optional<vertex_data>, std::map<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using VS_ms_NU_nu_PU_u_W_uw_graph = std::multimap<std::optional<vertex_data>, std::set<std::multimap<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using VS_ms_NU_nu_PU_u_W_mw_graph = std::multimap<std::optional<vertex_data>, std::map<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// path_uniqueness: not_unique
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using VS_ms_NU_nu_PU_nu_W_w_graph = std::multimap<std::optional<vertex_data>, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using VS_ms_NU_nu_PU_nu_W_uw_graph = std::multimap<std::optional<vertex_data>, std::multiset<std::multimap<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using VS_ms_NU_nu_PU_nu_W_mw_graph = std::multimap<std::optional<vertex_data>, std::multimap<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
 	enum vertex_uniqueness {
 		unique_vertices,
 		not_unique_vertices
@@ -188,65 +192,6 @@ namespace graph {
 						vertex_uniqueness v_u = unique_vertices, vertex_signifiance v_s = not_significative,
 						edge_uniqueness e_u = unique_edges, orientation o = unoriented, weightness w = unweighted) {
 
-						class baseType;
-						class baseData;
-						class subType;
-						class subData_1;
-						class subData_2;
-
-						switch(v_s) {
-							case not_significative:
-								using baseType = std::set;
-								//using subData_1 = baseType<unsigned int>::const_reference;
-								if(e_u == unique_edges) {
-									using subType = std::map;
-									switch(w) {
-										case weighted:
-											using subData_2 = edge_data;
-											//container = std::set<std::map<subData_1, subData_2>>();
-											break;
-										case unweighted:
-											//container = baseType<subType<subData_1>>
-											break;
-										case mixed_weightness:
-											using subData_2 = std::optional<edge_data>;
-											break;
-									}
-								}
-								else {
-									switch(w) {
-										case weighted:
-											using subType = std::map<std::map<std::any, std::any>::const_reference, edge_data>;
-											break;
-										case unweighted:
-											break;
-										case mixed_weightness:
-											break;
-									}
-								}
-
-								break;
-							case significative:
-								if(v_u == unique_vertices)
-									using baseType = std::map;
-								else
-
-								break;
-							case mixed_signifiance:
-								break;
-						}
-						switch(v_u) {
-							case unique_vertices:
-								break;
-							case not_unique_vertices:
-								break;
-						}
-						/*
-						baseType<baseData, subType<subData_1, subData_2>>;
-						baseType<subType<subData_1, subData_2>>;
-						baseType<baseData, subType<subData_1>>;
-						baseType<subType<subData_1>>;
-						*/
 						++instances;
 
 					}
