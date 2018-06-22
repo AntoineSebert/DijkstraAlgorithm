@@ -28,13 +28,141 @@
 #include <typeinfo>
 
 namespace graph {
-	enum node_uniqueness {
-		unique_nodes,
-		not_unique_nodes
+	// data types are created at compile-time, so I have to hard code them
+	// node_uniqueness: unique
+		// path_uniqueness: unique
+			// vertex_signifiance: significative
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_u_PU_u_VS_s_weighted_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using NU_u_PU_u_VS_s_unweighted_graph = std::map<vertex_data, std::set<std::map<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_u_PU_u_VS_s_mixed_weightness_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// vertex_signifiance: not_significative
+				// weightness: weighted
+					template<class edge_data = unsigned int>
+					using NU_u_PU_u_VS_ns_weighted_graph = std::set<std::map<std::set<std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					using NU_u_PU_u_VS_ns_unweighted_graph = std::set<std::set<std::set<std::any>::const_reference>>;
+				// weightness: mixed
+					template<class edge_data = unsigned int>
+					using NU_u_PU_u_VS_ns_mixed_weightness_graph = std::set<std::map<std::set<std::any>::const_reference, std::optional<edge_data>>>;
+			// vertex_signifiance: mixed_signifiance
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_u_PU_u_VS_ms_weighted_graph = std::map<std::optional<vertex_data>, std::map<std::map<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using NU_u_PU_u_VS_ms_unweighted_graph = std::map<std::optional<vertex_data>, std::set<std::map<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_u_PU_u_VS_ms_mixed_weightness_graph = std::map<std::optional<vertex_data>, std::map<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+		// path_uniqueness: not_unique
+			// vertex_signifiance: significative
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_u_PU_nu_VS_s_weighted_graph = std::map<vertex_data, std::multimap<std::map<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using NU_u_PU_nu_VS_s_unweighted_graph = std::map<vertex_data, std::multiset<std::map<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_u_PU_nu_VS_s_mixed_weightness_graph = std::map<vertex_data, std::multimap<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// vertex_signifiance: not_significative
+				// weightness: weighted
+					template<class edge_data = unsigned int>
+					using NU_u_PU_nu_VS_ns_weighted_graph = std::set<std::multimap<std::set<std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					using NU_u_PU_nu_VS_ns_unweighted_graph = std::set<std::multiset<std::set<std::any>::const_reference>>;
+				// weightness: mixed
+					template<class edge_data = unsigned int>
+					using NU_u_PU_nu_VS_ns_mixed_weightness_graph = std::set<std::multimap<std::set<std::any>::const_reference, std::optional<edge_data>>>;
+			// vertex_signifiance: mixed_signifiance
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_u_PU_nu_VS_ms_weighted_graph = std::map<std::optional<vertex_data>, std::multimap<std::map<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using NU_u_PU_nu_VS_ms_unweighted_graph = std::map<std::optional<vertex_data>, std::multiset<std::map<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_u_PU_nu_VS_ms_mixed_weightness_graph = std::map<std::optional<vertex_data>, std::multimap<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+	// node_uniqueness: not_unique
+		// path_uniqueness: unique
+			// vertex_signifiance: significative
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_nu_PU_u_VS_s_weighted_graph = std::multimap<vertex_data, std::map<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using NU_nu_PU_u_VS_s_unweighted_graph = std::multimap<vertex_data, std::set<std::multimap<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_nu_PU_u_VS_s_mixed_weightness_graph = std::multimap<vertex_data, std::map<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// vertex_signifiance: not_significative
+				// weightness: weighted
+					template<class edge_data = unsigned int>
+					using NU_nu_PU_u_VS_ns_weighted_graph = std::multiset<std::map<std::multiset<std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					using NU_nu_PU_u_VS_ns_unweighted_graph = std::multiset<std::set<std::multiset<std::any>::const_reference>>;
+				// weightness: mixed
+					template<class edge_data = unsigned int>
+					using NU_nu_PU_u_VS_ns_mixed_weightness_graph = std::multiset<std::map<std::multiset<std::any>::const_reference, std::optional<edge_data>>>;
+			// vertex_signifiance: mixed_signifiance
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_nu_PU_u_VS_ms_weighted_graph = std::multimap<std::optional<vertex_data>, std::map<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using NU_nu_PU_u_VS_ms_unweighted_graph = std::multimap<std::optional<vertex_data>, std::set<std::multimap<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_nu_PU_u_VS_ms_mixed_weightness_graph = std::multimap<std::optional<vertex_data>, std::map<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+		// path_uniqueness: not_unique
+			// vertex_signifiance: significative
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_nu_PU_nu_VS_s_weighted_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using NU_nu_PU_nu_VS_s_unweighted_graph = std::multimap<vertex_data, std::multiset<std::multimap<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_nu_PU_nu_VS_s_mixed_weightness_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// vertex_signifiance: not_significative
+				// weightness: weighted
+					template<class edge_data = unsigned int>
+					using NU_nu_PU_nu_VS_ns_weighted_graph = std::multiset<std::multimap<std::multiset<std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					using NU_nu_PU_nu_VS_ns_unweighted_graph = std::multiset<std::multiset<std::multiset<std::any>::const_reference>>;
+				// weightness: mixed
+					template<class edge_data = unsigned int>
+					using NU_nu_PU_nu_VS_ns_mixed_weightness_graph = std::multiset<std::multimap<std::multiset<std::any>::const_reference, std::optional<edge_data>>>;
+			// vertex_signifiance: mixed_signifiance
+				// weightness: weighted
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_nu_PU_nu_VS_ms_weighted_graph = std::multimap<std::optional<vertex_data>, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+				// weightness: unweighted
+					template<class vertex_data = unsigned int>
+					using NU_nu_PU_nu_VS_ms_unweighted_graph = std::multimap<std::optional<vertex_data>, std::multiset<std::multimap<std::any, std::any>::const_reference>>;
+				// weightness: mixed
+					template<class vertex_data = unsigned int, class edge_data = unsigned int>
+					using NU_nu_PU_nu_VS_ms_mixed_weightness_graph = std::multimap<std::optional<vertex_data>, std::multimap<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+	enum vertex_uniqueness {
+		unique_vertices,
+		not_unique_vertices
 	};
-	enum path_uniqueness {
-		unique_paths,
-		not_unique_paths
+	enum vertex_signifiance {
+		significative,
+		not_significative,
+		mixed_signifiance
+	};
+	enum edge_uniqueness {
+		unique_edges,
+		not_unique_edges
 	};
 	enum orientation {
 		oriented,
@@ -46,217 +174,192 @@ namespace graph {
 		unweighted,
 		mixed_weightness
 	};
-	// node_uniqueness: unique
-		// path_uniqueness: unique
-			// orientation: oriented
-				// weightness: weighted
-					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_u_PU_u_oriented_weighted_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, edge_data>>;
-				// weightness: unweighted
-					template<class vertex_data = unsigned int>
-					using NU_u_PU_u_oriented_unweighted_graph = std::map<vertex_data, std::set<std::map<std::any, std::any>::const_reference>>;
-				// weightness: mixed
-					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_u_PU_u_oriented_mixed_weightness_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-			// orientation: unoriented
-				// weightness: weighted
-
-				// weightness: unweighted
-
-				// weightness: mixed
-
-			// orientation: mixed
-				// weightness: weighted
-
-				// weightness: unweighted
-
-				// weightness: mixed
-
-		// path_uniqueness: not_unique
-			// orientation: oriented
-				// weightness: weighted
-
-				// weightness: unweighted
-
-				// weightness: mixed
-
-			// orientation: unoriented
-				// weightness: weighted
-
-				// weightness: unweighted
-
-				// weightness: mixed
-
-			// orientation: mixed
-				// weightness: weighted
-
-				// weightness: unweighted
-
-				// weightness: mixed
-
-	// node_uniqueness: not_unique
-		// path_uniqueness: unique
-			// orientation: oriented
-				// weightness: weighted
-
-				// weightness: unweighted
-
-				// weightness: mixed
-
-			// orientation: unoriented
-				// weightness: weighted
-
-				// weightness: unweighted
-
-				// weightness: mixed
-
-			// orientation: mixed
-				// weightness: weighted
-
-				// weightness: unweighted
-
-				// weightness: mixed
-
-		// path_uniqueness: not_unique
-			// orientation: oriented
-				// weightness: weighted
-					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_nu_PU_nu_oriented_weighted_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
-				// weightness: unweighted
-					template<class vertex_data = unsigned int>
-					using NU_nu_PU_nu_oriented_unweighted_graph = std::multimap<vertex_data, std::multiset<std::multimap<std::any, std::any>::const_reference>>;
-				// weightness: mixed
-					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_nu_PU_nu_oriented_mixed_weightness_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-			// orientation: unoriented
-				// weightness: weighted
-					/*
-					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using NU_nu_PU_nu_unoriented_weighted_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
-					*/
-				// weightness: unweighted
-
-				// weightness: mixed
-
-			// orientation: mixed
-				// weightness: weighted
-
-				// weightness: unweighted
-
-				// weightness: mixed
-
-	// node_uniqueness: not_unique, path_uniqueness: not_unique, weightess: weighted, orientation: oriented
-	template<class vertex_data = unsigned int, class edge_data = unsigned int>
-	using unique_oriented_weighted_graph = std::map<vertex_data, std::multimap<std::map<std::any, std::any>::const_reference, edge_data>>;
-	/*
-	template<class vertex_index = unsigned int>
-	using unoriented_unweighted_graph = std::
-*/
-	//using unoriented_unweighted_graph = std::multiset<std::multiset<unoriented_unweighted_graph::const_iterator>>;
-
+	// using sets, maps, multisets, multimaps: emplacements non contigus en mémoire, itérateurs restent valides en insertion et en suppression
 	template<class vertex_data = unsigned int, class edge_data = unsigned int>
 	class abstract_graph {
 		// ATTRIBUTES
-			// emplacements non contigus en mémoire, itérateurs restent valides en insertion et en suppression
-			NU_nu_PU_nu_oriented_weighted_graph<vertex_data, edge_data> container;
-			static unsigned int instances;
+			private:
+				std::any container;
+				static unsigned int instances;
 		// MEMBERS
-			// default constructor
-				abstract_graph() { ++instances; }
-			// copy constructor
-				abstract_graph(const abstract_graph& rhs) : container(rhs.container) { ++instances; }
-			// move constructor
-				abstract_graph(abstract_graph&& rhs) noexcept { container = std::move(other.container); }
-			// destructor
-				~abstract_graph() noexcept { --instances; }
-			// operators
-				// arithmetic operators
-					// basic assignation
-						abstract_graph& operator=(const abstract_graph& rhs) { container = rhs.container; }
-					// move assignment operator
-						abstract_graph& operator=(abstract_graph&& other) noexcept {
-							container = std::move(other.container);
-							return *this;
+			public:
+				// default constructor
+					abstract_graph(
+						vertex_uniqueness v_u = unique_vertices, vertex_signifiance v_s = not_significative,
+						edge_uniqueness e_u = unique_edges, orientation o = unoriented, weightness w = unweighted) {
+
+						class baseType;
+						class baseData;
+						class subType;
+						class subData_1;
+						class subData_2;
+
+						switch(v_s) {
+							case not_significative:
+								using baseType = std::set;
+								//using subData_1 = baseType<unsigned int>::const_reference;
+								if(e_u == unique_edges) {
+									using subType = std::map;
+									switch(w) {
+										case weighted:
+											using subData_2 = edge_data;
+											//container = std::set<std::map<subData_1, subData_2>>();
+											break;
+										case unweighted:
+											//container = baseType<subType<subData_1>>
+											break;
+										case mixed_weightness:
+											using subData_2 = std::optional<edge_data>;
+											break;
+									}
+								}
+								else {
+									switch(w) {
+										case weighted:
+											using subType = std::map<std::map<std::any, std::any>::const_reference, edge_data>;
+											break;
+										case unweighted:
+											break;
+										case mixed_weightness:
+											break;
+									}
+								}
+
+								break;
+							case significative:
+								if(v_u == unique_vertices)
+									using baseType = std::map;
+								else
+
+								break;
+							case mixed_signifiance:
+								break;
 						}
-					// add vertices and edges
-						abstract_graph* operator+(const abstract_graph& rhs) {
-							container.merge(rhs.container);
-							return *this;
+						switch(v_u) {
+							case unique_vertices:
+								break;
+							case not_unique_vertices:
+								break;
 						}
-					// remove vertices and edges if they exist
-						abstract_graph* operator-(const abstract_graph& rhs) {
-							for(vertex_data element : rhs.container)
-								container.erase(element);
-							// check the edges
-							return *this;
-						}
-				// bitwise operators
-					virtual void operator~() = 0;														// invert links orientation in oriented graphs
-					virtual void operator&(const abstract_graph& rhs) = 0;								// intersection
-					virtual void operator|(const abstract_graph& rhs) = 0;								// union
-					virtual void operator^(const abstract_graph& rhs) = 0;								// difference
-				// comparison/relational operators
-					// compare vertices and edges
-						bool operator==(const abstract_graph& rhs) {
-							// check if size of the containers is the same
-							if(container.size() != rhs.container.size())
-								return false;
-							// check if number of keys is the same
-							if(std::set<vertex_data> keys_set(container), keys_set_rhs(rhs.container);  keys_set.size() != keys_set_rhs.size())
-								return false;
-							// check if number of each key is the same
-							for(const auto& element : keys_set) {
-								if(container.count(element) != rhs.container.count(element))
-									return false;
+						/*
+						baseType<baseData, subType<subData_1, subData_2>>;
+						baseType<subType<subData_1, subData_2>>;
+						baseType<baseData, subType<subData_1>>;
+						baseType<subType<subData_1>>;
+						*/
+						++instances;
+
+					}
+				// copy constructor
+					abstract_graph(const abstract_graph& rhs) : container(rhs.container) { ++instances; }
+				// move constructor
+					abstract_graph(abstract_graph&& rhs) noexcept { container = std::move(other.container); }
+				// destructor
+					~abstract_graph() noexcept { --instances; }
+				// operators
+					// arithmetic operators
+						// basic assignation
+							abstract_graph& operator=(const abstract_graph& rhs) { container = rhs.container; }
+						// move assignment operator
+							abstract_graph& operator=(abstract_graph&& other) noexcept {
+								container = std::move(other.container);
+								return *this;
 							}
-							// iterate through edges
-							auto it_rhs = rhs.container.begin();
-							for(auto it = container.cbegin(); it != container.end(); ++it) {
-								// check if size of the edges containers is the same
-								if(it->second.size() != it_rhs->second.size())
+						// add vertices and edges
+							abstract_graph* operator+(const abstract_graph& rhs) {
+								container.merge(rhs.container);
+								return *this;
+							}
+						// remove vertices and edges if they exist
+							abstract_graph* operator-(const abstract_graph& rhs) {
+								for(vertex_data element : rhs.container)
+									container.erase(element);
+								// check the edges
+								return *this;
+							}
+					// bitwise operators
+						// invert links orientation in oriented graphs
+							abstract_graph* operator~() { return *this; }
+						// intersection
+							void operator&(const abstract_graph& rhs) {}
+						// union
+							void operator|(const abstract_graph& rhs) {}
+						// difference
+							void operator^(const abstract_graph& rhs) {}
+					// comparison/relational operators
+						// compare vertices and edges
+							bool operator==(const abstract_graph& rhs) {
+								// check if size of the containers
+								if(container.size() != rhs.container.size())
 									return false;
-
-
-								// check if number of keys is the same
+								// check if number of keys
 								if(std::set<vertex_data> keys_set(container), keys_set_rhs(rhs.container);  keys_set.size() != keys_set_rhs.size())
 									return false;
-								// check if number of each key is the same
+								// check if number of each key
 								for(const auto& element : keys_set) {
 									if(container.count(element) != rhs.container.count(element))
 										return false;
 								}
+								// iterate through vertices
+								auto it_rhs = rhs.container.begin();
+								for(auto it = container.cbegin(); it != container.end(); ++it) {
+									// check if size of the edges containers
+									if(it->second.size() != it_rhs->second.size())
+										return false;
+									// check if number of keys
+									if(std::set<vertex_data> keys_set(container), keys_set_rhs(rhs.container);  keys_set.size() != keys_set_rhs.size())
+										return false;
+									// check if number of each key
+									for(const auto& element : keys_set) {
+										if(container.count(element) != rhs.container.count(element))
+											return false;
+									}
+									// iterate through edges
+									auto it2_rhs = it_rhs->second.begin();
+									for(auto it2 = it->second.begin(); it2 != it->second.end(); ++it2) {
+										// check if the weight exists
+										if(it2->second xor it2_rhs->second)
+											return false;
+										// check if the weight is the same
+										if(it2->second != it2_rhs->second)
+											return false;
+										++it2_rhs;
+									}
 
-								// check if the weight is the same
-
-								++it_rhs;
+									++it_rhs;
+								}
+								return true;
 							}
-							return true;
-						}
-					// compare vertices and edges
-						bool operator!=(const abstract_graph& rhs) { return !(this == rhs); }
-					// compare number of vertices
-					virtual bool operator>(const abstract_graph& rhs) const { return container.size() > rhs.container.size(); }
-					// compare number of vertices
-					virtual bool operator<(const abstract_graph& rhs) const { return container.size() < rhs.container.size(); }
-					// compare number of vertices
-					virtual bool operator>=(const abstract_graph& rhs) const { return !(this < rhs); }
-					// compare number of vertices
-					virtual bool operator<=(const abstract_graph& rhs) const { return !(this > rhs); }
-					// compare number of vertices
-					//virtual bool operator<=>(const abstract_graph& rhs) const {}						// (C++20) ( ͡° ͜ʖ ͡°)
-				// compound assignment operators
-					virtual abstract_graph& operator+=(const abstract_graph& rhs) = 0;					// add vertices and edges
-					virtual abstract_graph& operator-=(const abstract_graph& rhs) = 0;					// remove vertices and edges if they exist
-					virtual abstract_graph& operator&=(const abstract_graph& rhs) = 0;					// intersection
-					virtual abstract_graph& operator|=(const abstract_graph& rhs) = 0;					// union
-					virtual abstract_graph& operator^=(const abstract_graph& rhs) = 0;					// difference
-				// logical operators
-					// check if empty
-					bool operator!() { return container.empty(); }
-					// check if the two graphs are not empty
-					bool operator&&(const abstract_graph& rhs) { return !(container.empty() || rhs.container.empty()); }
-					// check if one of the two graphs is not empty
-					bool operator||(const abstract_graph& rhs) { return !(container.empty() && rhs.container.empty()); }
+						// compare vertices and edges
+							bool operator!=(const abstract_graph& rhs) { return !(this == rhs); }
+						// compare number of vertices
+							bool operator>(const abstract_graph& rhs) const { return container.size() > rhs.container.size(); }
+						// compare number of vertices
+							bool operator<(const abstract_graph& rhs) const { return container.size() < rhs.container.size(); }
+						// compare number of vertices
+							bool operator>=(const abstract_graph& rhs) const { return !(this < rhs); }
+						// compare number of vertices
+							bool operator<=(const abstract_graph& rhs) const { return !(this > rhs); }
+						// compare number of vertices ( ͡° ͜ʖ ͡°) (C++20)
+							//bool operator<=>(const abstract_graph& rhs) const {}
+					// compound assignment operators
+						// add vertices and edges
+							abstract_graph& operator+=(const abstract_graph& rhs) = 0;
+						// remove vertices and edges if they exist
+							abstract_graph& operator-=(const abstract_graph& rhs) = 0;
+						// intersection
+							abstract_graph& operator&=(const abstract_graph& rhs) = 0;
+						// union
+							abstract_graph& operator|=(const abstract_graph& rhs) = 0;
+						// difference
+							abstract_graph& operator^=(const abstract_graph& rhs) = 0;
+					// logical operators
+						// check if empty
+							bool operator!() { return container.empty(); }
+						// check if the two graphs are not empty
+							bool operator&&(const abstract_graph& rhs) { return !(container.empty() || rhs.container.empty()); }
+						// check if one of the two graphs is not empty
+							bool operator||(const abstract_graph& rhs) { return !(container.empty() && rhs.container.empty()); }
 			/*
 			The basic operations provided by a graph data structure G usually include:
 				adjacent(x, y): tests whether there is an edge from the vertex x to the vertex y;
