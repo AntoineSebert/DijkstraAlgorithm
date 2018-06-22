@@ -23,6 +23,7 @@
 #include <map>
 #include <optional>
 #include <set>
+#include <string>
 #include <utility>
 #include <vector>
 #include <typeinfo>
@@ -31,130 +32,130 @@ namespace graph {
 	// data types are created at compile-time, so I have to hard code them
 
 	// vertex_signifiance: significative
-		// node_uniqueness: unique
-			// path_uniqueness: unique
+		// vertex_uniqueness: unique
+			// edges_uniqueness: unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_s_NU_u_PU_u_W_w_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, edge_data>>;
+					using VS_s_VU_u_EU_u_W_w_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using VS_sNU_u_PU_u_W_uw_graph = std::map<vertex_data, std::set<std::map<std::any, std::any>::const_reference>>;
+					using VS_s_VU_u_EU_u_W_uw_graph = std::map<vertex_data, std::set<std::map<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_sNU_u_PU_u_W_mw_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-			// path_uniqueness: not_unique
+					using VS_s_VU_u_EU_u_W_mw_graph = std::map<vertex_data, std::map<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// edges_uniqueness: not_unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_s_NU_u_PU_nu_W_w_graph = std::map<vertex_data, std::multimap<std::map<std::any, std::any>::const_reference, edge_data>>;
+					using VS_s_VU_u_EU_nu_W_w_graph = std::map<vertex_data, std::multimap<std::map<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using VS_s_NU_u_PU_nu_W_uw_graph = std::map<vertex_data, std::multiset<std::map<std::any, std::any>::const_reference>>;
+					using VS_s_VU_u_EU_nu_W_uw_graph = std::map<vertex_data, std::multiset<std::map<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_s_NU_u_PU_nu_W_mw_graph = std::map<vertex_data, std::multimap<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-		// node_uniqueness: not_unique
-			// path_uniqueness: unique
+					using VS_s_VU_u_EU_nu_W_mw_graph = std::map<vertex_data, std::multimap<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+		// vertex_uniqueness: not_unique
+			// edges_uniqueness: unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_s_NU_nu_PU_u_W_w_graph = std::multimap<vertex_data, std::map<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+					using VS_s_VU_nu_EU_u_W_w_graph = std::multimap<vertex_data, std::map<std::multimap<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using VS_s_NU_nu_PU_u_W_uw_graph = std::multimap<vertex_data, std::set<std::multimap<std::any, std::any>::const_reference>>;
+					using VS_s_VU_nu_EU_u_W_uw_graph = std::multimap<vertex_data, std::set<std::multimap<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_s_NU_nu_PU_u_W_mw_graph = std::multimap<vertex_data, std::map<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-			// path_uniqueness: not_unique
+					using VS_s_VU_nu_EU_u_W_mw_graph = std::multimap<vertex_data, std::map<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// edges_uniqueness: not_unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_s_NU_nu_PU_nu_W_w_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+					using VS_s_VU_nu_EU_nu_W_w_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using VS_s_NU_nu_PU_nu_W_uw_graph = std::multimap<vertex_data, std::multiset<std::multimap<std::any, std::any>::const_reference>>;
+					using VS_s_VU_nu_EU_nu_W_uw_graph = std::multimap<vertex_data, std::multiset<std::multimap<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_s_NU_nu_PU_nu_W_mw_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+					using VS_s_VU_nu_EU_nu_W_mw_graph = std::multimap<vertex_data, std::multimap<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
 	// vertex_signifiance: not_significative
-		// node_uniqueness: unique
-			// path_uniqueness: unique
+		// vertex_uniqueness: unique
+			// edges_uniqueness: unique
 				// weightness: weighted
 					template<class edge_data = unsigned int>
-					using VS_ns_NU_u_PU_u_W_w_graph = std::set<std::map<std::set<std::any>::const_reference, edge_data>>;
+					using VS_ns_VU_u_EU_u_W_w_graph = std::set<std::map<std::set<std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
-					using VS_ns_NU_u_PU_u_W_uw_graph = std::set<std::set<std::set<std::any>::const_reference>>;
+					using VS_ns_VU_u_EU_u_W_uw_graph = std::set<std::set<std::set<std::any>::const_reference>>;
 				// weightness: mixed
 					template<class edge_data = unsigned int>
-					using VS_ns_NU_u_PU_u_W_mw_graph = std::set<std::map<std::set<std::any>::const_reference, std::optional<edge_data>>>;
-			// path_uniqueness: not_unique
+					using VS_ns_VU_u_EU_u_W_mw_graph = std::set<std::map<std::set<std::any>::const_reference, std::optional<edge_data>>>;
+			// edges_uniqueness: not_unique
 				// weightness: weighted
 					template<class edge_data = unsigned int>
-					using VS_ns_NU_u_PU_nu_W_w_graph = std::set<std::multimap<std::set<std::any>::const_reference, edge_data>>;
+					using VS_ns_VU_u_EU_nu_W_w_graph = std::set<std::multimap<std::set<std::any>::const_reference, edge_data>>;
 					// weightness: unweighted
-					using VS_ns_NU_u_PU_nu_W_uw_graph = std::set<std::multiset<std::set<std::any>::const_reference>>;
+					using VS_ns_VU_u_EU_nu_W_uw_graph = std::set<std::multiset<std::set<std::any>::const_reference>>;
 					// weightness: mixed
 					template<class edge_data = unsigned int>
-					using VS_ns_NU_u_PU_nu_W_mw_graph = std::set<std::multimap<std::set<std::any>::const_reference, std::optional<edge_data>>>;
-		// node_uniqueness: not_unique (if all the nodes are indexed based on their position in the container, is this part really necessary ?)
-			// path_uniqueness: unique
+					using VS_ns_VU_u_EU_nu_W_mw_graph = std::set<std::multimap<std::set<std::any>::const_reference, std::optional<edge_data>>>;
+		// vertex_uniqueness: not_unique (if all the nodes are indexed based on their position in the container, is this part really necessary ?)
+			// edges_uniqueness: unique
 				// weightness: weighted
 					template<class edge_data = unsigned int>
-					using VS_ns_NU_nu_PU_u_W_w_graph = std::multiset<std::map<std::multiset<std::any>::const_reference, edge_data>>;
+					using VS_ns_VU_nu_EU_u_W_w_graph = std::multiset<std::map<std::multiset<std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
-					using VS_ns_NU_nu_PU_u_W_uw_graph = std::multiset<std::set<std::multiset<std::any>::const_reference>>;
+					using VS_ns_VU_nu_EU_u_W_uw_graph = std::multiset<std::set<std::multiset<std::any>::const_reference>>;
 				// weightness: mixed
 					template<class edge_data = unsigned int>
-					using VS_ns_NU_nu_PU_u_W_mw_graph = std::multiset<std::map<std::multiset<std::any>::const_reference, std::optional<edge_data>>>;
-			// path_uniqueness: not_unique
+					using VS_ns_VU_nu_EU_u_W_mw_graph = std::multiset<std::map<std::multiset<std::any>::const_reference, std::optional<edge_data>>>;
+			// edges_uniqueness: not_unique
 				// weightness: weighted
 					template<class edge_data = unsigned int>
-					using VS_ns_NU_nu_PU_nu_W_w_graph = std::multiset<std::multimap<std::multiset<std::any>::const_reference, edge_data>>;
+					using VS_ns_VU_nu_EU_nu_W_w_graph = std::multiset<std::multimap<std::multiset<std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
-					using VS_ns_NU_nu_PU_nu_W_uw_graph = std::multiset<std::multiset<std::multiset<std::any>::const_reference>>;
+					using VS_ns_VU_nu_EU_nu_W_uw_graph = std::multiset<std::multiset<std::multiset<std::any>::const_reference>>;
 				// weightness: mixed
 					template<class edge_data = unsigned int>
-					using VS_ns_NU_nu_PU_nu_W_mw_graph = std::multiset<std::multimap<std::multiset<std::any>::const_reference, std::optional<edge_data>>>;
+					using VS_ns_VU_nu_EU_nu_W_mw_graph = std::multiset<std::multimap<std::multiset<std::any>::const_reference, std::optional<edge_data>>>;
 	// vertex_signifiance: mixed_signifiance
-		// node_uniqueness: unique
-			// path_uniqueness: unique
+		// vertex_uniqueness: unique
+			// edges_uniqueness: unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_ms_NU_u_PU_u_W_w_graph = std::map<std::optional<vertex_data>, std::map<std::map<std::any, std::any>::const_reference, edge_data>>;
+					using VS_ms_VU_u_EU_u_W_w_graph = std::map<std::optional<vertex_data>, std::map<std::map<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using VS_ms_NU_u_PU_u_W_uw_graph = std::map<std::optional<vertex_data>, std::set<std::map<std::any, std::any>::const_reference>>;
+					using VS_ms_VU_u_EU_u_W_uw_graph = std::map<std::optional<vertex_data>, std::set<std::map<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_ms_NU_u_PU_u_W_mw_graph = std::map<std::optional<vertex_data>, std::map<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-			// path_uniqueness: not_unique
+					using VS_ms_VU_u_EU_u_W_mw_graph = std::map<std::optional<vertex_data>, std::map<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// edges_uniqueness: not_unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_ms_NU_u_PU_nu_W_w_graph = std::map<std::optional<vertex_data>, std::multimap<std::map<std::any, std::any>::const_reference, edge_data>>;
+					using VS_ms_VU_u_EU_nu_W_w_graph = std::map<std::optional<vertex_data>, std::multimap<std::map<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using VS_ms_NU_u_PU_nu_W_uw_graph = std::map<std::optional<vertex_data>, std::multiset<std::map<std::any, std::any>::const_reference>>;
+					using VS_ms_VU_u_EU_nu_W_uw_graph = std::map<std::optional<vertex_data>, std::multiset<std::map<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_ms_NU_u_PU_nu_W_mw_graph = std::map<std::optional<vertex_data>, std::multimap<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-		// node_uniqueness: not_unique
-			// path_uniqueness: unique
+					using VS_ms_VU_u_EU_nu_W_mw_graph = std::map<std::optional<vertex_data>, std::multimap<std::map<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+		// vertex_uniqueness: not_unique
+			// edges_uniqueness: unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_ms_NU_nu_PU_u_W_w_graph = std::multimap<std::optional<vertex_data>, std::map<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+					using VS_ms_VU_nu_EU_u_W_w_graph = std::multimap<std::optional<vertex_data>, std::map<std::multimap<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using VS_ms_NU_nu_PU_u_W_uw_graph = std::multimap<std::optional<vertex_data>, std::set<std::multimap<std::any, std::any>::const_reference>>;
+					using VS_ms_VU_nu_EU_u_W_uw_graph = std::multimap<std::optional<vertex_data>, std::set<std::multimap<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_ms_NU_nu_PU_u_W_mw_graph = std::multimap<std::optional<vertex_data>, std::map<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
-			// path_uniqueness: not_unique
+					using VS_ms_VU_nu_EU_u_W_mw_graph = std::multimap<std::optional<vertex_data>, std::map<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+			// edges_uniqueness: not_unique
 				// weightness: weighted
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_ms_NU_nu_PU_nu_W_w_graph = std::multimap<std::optional<vertex_data>, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
+					using VS_ms_VU_nu_EU_nu_W_w_graph = std::multimap<std::optional<vertex_data>, std::multimap<std::multimap<std::any, std::any>::const_reference, edge_data>>;
 				// weightness: unweighted
 					template<class vertex_data = unsigned int>
-					using VS_ms_NU_nu_PU_nu_W_uw_graph = std::multimap<std::optional<vertex_data>, std::multiset<std::multimap<std::any, std::any>::const_reference>>;
+					using VS_ms_VU_nu_EU_nu_W_uw_graph = std::multimap<std::optional<vertex_data>, std::multiset<std::multimap<std::any, std::any>::const_reference>>;
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
-					using VS_ms_NU_nu_PU_nu_W_mw_graph = std::multimap<std::optional<vertex_data>, std::multimap<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
+					using VS_ms_VU_nu_EU_nu_W_mw_graph = std::multimap<std::optional<vertex_data>, std::multimap<std::multimap<std::any, std::any>::const_reference, std::optional<edge_data>>>;
 	enum vertex_uniqueness {
 		unique_vertices,
 		not_unique_vertices
@@ -185,15 +186,200 @@ namespace graph {
 			private:
 				std::any container;
 				static unsigned int instances;
+				std::map<std::string, std::any> properties;
 		// MEMBERS
 			public:
 				// default constructor
 					abstract_graph(
-						vertex_uniqueness v_u = unique_vertices, vertex_signifiance v_s = not_significative,
-						edge_uniqueness e_u = unique_edges, orientation o = unoriented, weightness w = unweighted) {
+						vertex_signifiance v_s = not_significative, vertex_uniqueness v_u = unique_vertices,
+						edge_uniqueness e_u = unique_edges, weightness w = unweighted, orientation o = unoriented) {
+
+						properties = {
+							{ "vertex_signifiance", v_s },
+							{ "vertex_uniqueness", v_u },
+							{ "edge_uniqueness", e_u },
+							{ "weightness", w },
+							{ "orientation", o }
+						};
+
+						switch(vertex_signifiance) {
+							case significative:
+								if(vertex_uniqueness == unique_vertices) {
+									if(edge_uniqueness == unique_edges) {
+										switch(weightness) {
+											case weighted:
+												container = VS_s_VU_u_EU_u_W_w_graph<vertex_data, edge_data>();
+												break;
+											case unweighted:
+												container = VS_s_VU_u_EU_u_W_uw_graph<vertex_data>();
+												break;
+											case mixed_weightness:
+												container = VS_s_VU_u_EU_u_W_mw_graph<vertex_data, edge_data>();
+												break;
+										}
+									}
+									else {
+										switch(weightness) {
+											case weighted:
+												container = VS_s_VU_u_EU_nu_W_w_graph<vertex_data, edge_data>();
+												break;
+											case unweighted:
+												container = VS_s_VU_u_EU_nu_W_uw_graph<vertex_data>();
+												break;
+											case mixed_weightness:
+												container = VS_s_VU_u_EU_nu_W_mw_graph<vertex_data, edge_data>();
+												break;
+										}
+									}
+								}
+								else {
+									if(edge_uniqueness == unique_edges) {
+										switch(weightness) {
+											case weighted:
+												container = VS_s_VU_nu_EU_u_W_w_graph<vertex_data, edge_data>();
+												break;
+											case unweighted:
+												container = VS_s_VU_nu_EU_u_W_uw_graph<vertex_data>();
+												break;
+											case mixed_weightness:
+												container = VS_s_VU_nu_EU_u_W_mw_graph<vertex_data, edge_data>();
+												break;
+										}
+									}
+									else {
+										switch(weightness) {
+											case weighted:
+												container = VS_s_VU_nu_EU_nu_W_w_graph<vertex_data, edge_data>();
+												break;
+											case unweighted:
+												container = VS_s_VU_nu_EU_nu_W_uw_graph<vertex_data>();
+												break;
+											case mixed_weightness:
+												container = VS_s_VU_nu_EU_nu_W_mw_graph<vertex_data, edge_data>();
+												break;
+										}
+									}
+								}
+								break;
+							case not_significative:
+								if(vertex_uniqueness == unique_vertices) {
+									if(edge_uniqueness == unique_edges) {
+										switch(weightness) {
+											case weighted:
+												container = VS_ns_VU_u_EU_u_W_w_graph<edge_data>();
+												break;
+											case unweighted:
+												container = VS_ns_VU_u_EU_u_W_uw_graph();
+												break;
+											case mixed_weightness:
+												container = VS_ns_VU_u_EU_u_W_mw_graph<edge_data>();
+												break;
+										}
+									}
+									else {
+										switch(weightness) {
+											case weighted:
+												container = VS_ns_VU_u_EU_nu_W_w_graph<edge_data>();
+												break;
+											case unweighted:
+												container = VS_ns_VU_u_EU_nu_W_uw_graph();
+												break;
+											case mixed_weightness:
+												container = VS_ns_VU_u_EU_nu_W_mw_graph<edge_data>();
+												break;
+										}
+									}
+								}
+								else {
+									if(edge_uniqueness == unique_edges) {
+										switch(weightness) {
+											case weighted:
+												container = VS_ns_VU_nu_EU_u_W_w_graph<edge_data>();
+												break;
+											case unweighted:
+												container = VS_ns_VU_nu_EU_u_W_uw_graph();
+												break;
+											case mixed_weightness:
+												container = VS_ns_VU_nu_EU_u_W_mw_graph<edge_data>();
+												break;
+										}
+									}
+									else {
+										switch(weightness) {
+											case weighted:
+												container = VS_ns_VU_nu_EU_nu_W_w_graph<edge_data>();
+												break;
+											case unweighted:
+												container = VS_ns_VU_nu_EU_nu_W_uw_graph();
+												break;
+											case mixed_weightness:
+												container = VS_ns_VU_nu_EU_nu_W_mw_graph<edge_data>();
+												break;
+										}
+									}
+								}
+								break;
+							case mixed_signifiance:
+								if(vertex_uniqueness == unique_vertices) {
+									if(edge_uniqueness == unique_edges) {
+										switch(weightness) {
+											case weighted:
+												container = VS_ms_VU_u_EU_u_W_w_graph<vertex_data, edge_data>();
+												break;
+											case unweighted:
+												container = VS_ms_VU_u_EU_u_W_uw_graph<vertex_data>();
+												break;
+											case mixed_weightness:
+												container = VS_ms_VU_u_EU_u_W_mw_graph<vertex_data, edge_data>();
+												break;
+										}
+									}
+									else {
+										switch(weightness) {
+											case weighted:
+												container = VS_ms_VU_u_EU_nu_W_w_graph<vertex_data, edge_data>();
+												break;
+											case unweighted:
+												container = VS_ms_VU_u_EU_nu_W_uw_graph<vertex_data>();
+												break;
+											case mixed_weightness:
+												container = VS_ms_VU_u_EU_nu_W_mw_graph<vertex_data, edge_data>();
+												break;
+										}
+									}
+								}
+								else {
+									if(edge_uniqueness == unique_edges) {
+										switch(weightness) {
+											case weighted:
+												container = VS_ms_VU_nu_EU_u_W_w_graph<vertex_data, edge_data>();
+												break;
+											case unweighted:
+												container = VS_ms_VU_nu_EU_u_W_uw_graph<vertex_data>();
+												break;
+											case mixed_weightness:
+												container = VS_ms_VU_nu_EU_u_W_mw_graph<vertex_data, edge_data>();
+												break;
+										}
+									}
+									else {
+										switch(weightness) {
+											case weighted:
+												container = VS_ms_VU_nu_EU_nu_W_w_graph<vertex_data, edge_data>();
+												break;
+											case unweighted:
+												container = VS_ms_VU_nu_EU_nu_W_uw_graph<vertex_data>();
+												break;
+											case mixed_weightness:
+												container = VS_ms_VU_nu_EU_nu_W_mw_graph<vertex_data, edge_data>();
+												break;
+										}
+									}
+								}
+								break;
+						}
 
 						++instances;
-
 					}
 				// copy constructor
 					abstract_graph(const abstract_graph& rhs) : container(rhs.container) { ++instances; }
