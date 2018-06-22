@@ -382,24 +382,32 @@ namespace graph {
 						++instances;
 					}
 				// copy constructor
-					abstract_graph(const abstract_graph& rhs) : container(rhs.container) { ++instances; }
+					abstract_graph(const abstract_graph& rhs) : container(rhs.container), properties(rhs.properties) { ++instances; }
 				// move constructor
-					abstract_graph(abstract_graph&& rhs) noexcept { container = std::move(other.container); }
+					abstract_graph(abstract_graph&& rhs) noexcept {
+						container = std::move(rhs.container);
+						properties = std::move(rhs.properties);
+					}
 				// destructor
 					~abstract_graph() noexcept { --instances; }
 				// operators
 					// arithmetic operators
 						// basic assignation
-							abstract_graph& operator=(const abstract_graph& rhs) { container = rhs.container; }
+							abstract_graph& operator=(const abstract_graph& rhs) {
+								container = rhs.container;
+								properties = rhs.properties;
+							}
 						// move assignment operator
 							abstract_graph& operator=(abstract_graph&& other) noexcept {
 								container = std::move(other.container);
+								properties = std::move(rhs.properties);
 								return *this;
 							}
 						// add vertices and edges
-							abstract_graph* operator+(const abstract_graph& rhs) {
-								container.merge(rhs.container);
-								return *this;
+							abstract_graph operator+(const abstract_graph& rhs) {
+								if(std::equal(properties.cbegin(), properties.cend(), rhs.properties.cbegin()))
+									container.merge(rhs.container);
+								return this;
 							}
 						// remove vertices and edges if they exist
 							abstract_graph* operator-(const abstract_graph& rhs) {
@@ -420,6 +428,27 @@ namespace graph {
 					// comparison/relational operators
 						// compare vertices and edges
 							bool operator==(const abstract_graph& rhs) {
+
+								// check properties
+								try {
+									if(!std::equal(properties.cbegin(), properties.cend(), rhs.properties.cbegin()))
+										return false;
+								}
+								catch(std::bad_alloc e) {
+									e.what();
+								}
+
+								// maybe replace all the code below
+								/*
+								try {
+								if(!std::equal(container.cbegin(), container.cend(), rhs.container.cbegin()))
+								return false;
+								}
+								catch(std::bad_alloc e) {
+								e.what();
+								}
+								*/
+
 								// check if size of the containers
 								if(container.size() != rhs.container.size())
 									return false;
@@ -462,35 +491,35 @@ namespace graph {
 								return true;
 							}
 						// compare vertices and edges
-							bool operator!=(const abstract_graph& rhs) { return !(this == rhs); }
+							inline bool operator!=(const abstract_graph& rhs) { return !(this == rhs); }
 						// compare number of vertices
-							bool operator>(const abstract_graph& rhs) const { return container.size() > rhs.container.size(); }
+							inline bool operator>(const abstract_graph& rhs) const { return container.size() > rhs.container.size(); }
 						// compare number of vertices
-							bool operator<(const abstract_graph& rhs) const { return container.size() < rhs.container.size(); }
+							inline bool operator<(const abstract_graph& rhs) const { return container.size() < rhs.container.size(); }
 						// compare number of vertices
-							bool operator>=(const abstract_graph& rhs) const { return !(this < rhs); }
+							inline bool operator>=(const abstract_graph& rhs) const { return !(this < rhs); }
 						// compare number of vertices
-							bool operator<=(const abstract_graph& rhs) const { return !(this > rhs); }
+							inline bool operator<=(const abstract_graph& rhs) const { return !(this > rhs); }
 						// compare number of vertices ( ͡° ͜ʖ ͡°) (C++20)
 							//bool operator<=>(const abstract_graph& rhs) const {}
 					// compound assignment operators
 						// add vertices and edges
-							abstract_graph& operator+=(const abstract_graph& rhs) = 0;
+							abstract_graph& operator+=(const abstract_graph& rhs) { return this + rhs; }
 						// remove vertices and edges if they exist
-							abstract_graph& operator-=(const abstract_graph& rhs) = 0;
+							abstract_graph& operator-=(const abstract_graph& rhs) { return this - rhs; }
 						// intersection
-							abstract_graph& operator&=(const abstract_graph& rhs) = 0;
+							abstract_graph& operator&=(const abstract_graph& rhs) {}
 						// union
-							abstract_graph& operator|=(const abstract_graph& rhs) = 0;
+							abstract_graph& operator|=(const abstract_graph& rhs) {}
 						// difference
-							abstract_graph& operator^=(const abstract_graph& rhs) = 0;
+							abstract_graph& operator^=(const abstract_graph& rhs) {}
 					// logical operators
 						// check if empty
-							bool operator!() { return container.empty(); }
+							inline bool operator!() { return container.empty(); }
 						// check if the two graphs are not empty
-							bool operator&&(const abstract_graph& rhs) { return !(container.empty() || rhs.container.empty()); }
+							inline bool operator&&(const abstract_graph& rhs) { return !(container.empty() || rhs.container.empty()); }
 						// check if one of the two graphs is not empty
-							bool operator||(const abstract_graph& rhs) { return !(container.empty() && rhs.container.empty()); }
+							inline bool operator||(const abstract_graph& rhs) { return !(container.empty() && rhs.container.empty()); }
 			/*
 			The basic operations provided by a graph data structure G usually include:
 				adjacent(x, y): tests whether there is an edge from the vertex x to the vertex y;
@@ -506,6 +535,8 @@ namespace graph {
 				get_edge_value(x, y): returns the value associated with the edge (x, y);
 				set_edge_value(x, y, v): sets the value associated with the edge (x, y) to v.
 			*/
+		private:
+			inline bool compareMaps(std::map<std::string, std::any>* first, std::map<std::string, std::any>* second) throw std::bad_alloc { return std::equal(first->cbegin(), first->cend(), second->cbegin()); }
 	};
 }
 
