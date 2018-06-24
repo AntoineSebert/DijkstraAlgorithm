@@ -20,6 +20,7 @@
 #define GRAPH_HPP
 
 #include <any>
+#include <exception>
 #include <map>
 #include <optional>
 #include <set>
@@ -178,6 +179,26 @@ namespace graph {
 		weighted,
 		unweighted,
 		mixed_weightness
+	};
+	class graph_incompatibility : public std::exception {
+		private:
+			std::string message = "The graphs do not have the same properties";
+		public:
+			graph_incompatibility(
+				const std::map<std::string, std::any>& properties_1 = std::map<std::string, std::any>(),
+				const std::map<std::string, std::any>& properties_2 = std::map<std::string, std::any>()) {
+
+				if(!properties_1.empty() && !properties_2.empty()) {
+
+					for(const auto [key, value] : properties_1) {
+						/*
+						if(value != properties_2.at(key))
+							message += key;
+						*/
+					}
+				}
+			}
+			virtual const char* what() const throw() { return message.c_str(); }
 	};
 	// using sets, maps, multisets, multimaps: emplacements non contigus en mémoire, itérateurs restent valides en insertion et en suppression
 	template<class vertex_data = unsigned int, class edge_data = unsigned int>
@@ -408,6 +429,7 @@ namespace graph {
 							abstract_graph operator+(const abstract_graph& rhs) {
 								if(std::equal(properties.cbegin(), properties.cend(), rhs.properties.cbegin()))
 									container.merge(rhs.container);
+								// check stuff
 								return this;
 							}
 						// remove vertices and edges if they exist
@@ -421,7 +443,12 @@ namespace graph {
 							}
 					// bitwise operators
 						// invert links orientation in oriented graphs
-							abstract_graph* operator~() { return *this; }
+							abstract_graph* operator~() {
+								if(properties.at("orientation") == oriented) {
+
+								}
+								return *this;
+							}
 						// intersection
 							void operator&(const abstract_graph& rhs) {}
 						// union
@@ -523,22 +550,56 @@ namespace graph {
 							inline bool operator&&(const abstract_graph& rhs) { return !(container.empty() || rhs.container.empty()); }
 						// check if one of the two graphs is not empty
 							inline bool operator||(const abstract_graph& rhs) { return !(container.empty() && rhs.container.empty()); }
+				// graph operations
+					// check compatibility of the properties
+						bool isCompatible(const abstract_graph& rhs) const { return properties = rhs.properties; }
+					// tests whether there is an edge from the vertex x to the vertex y
+						bool adjacent(vertex_data vertex_1, vertex_data vertex_2, unsigned int index_1 = 0, unsigned int index_2 = 0) {
+							if(properties.at("orientation") == oriented) {
+
+							}
+							else {
+
+							}
+							return false;
+						}
 			/*
 			The basic operations provided by a graph data structure G usually include:
-				adjacent(x, y): tests whether there is an edge from the vertex x to the vertex y;
-				neighbors(x): lists all vertices y such that there is an edge from the vertex x to the vertex y;
-				add_vertex(x): adds the vertex x, if it is not there;
-				remove_vertex(x): removes the vertex x, if it is there;
-				add_edge(x, y): adds the edge from the vertex x to the vertex y, if it is not there;
-				remove_edge(x, y): removes the edge from the vertex x to the vertex y, if it is there;
-				get_vertex_value(x): returns the value associated with the vertex x;
-				set_vertex_value(x, v): sets the value associated with the vertex x to v.
+				adjacent(x, y): tests whether there is an edge from the vertex x to the vertex y
+				neighbors(x): lists all vertices y such that there is an edge from the vertex x to the vertex y
+				add_vertex(x): adds the vertex x, if it is not there
+				remove_vertex(x): removes the vertex x, if it is there
+				add_edge(x, y): adds the edge from the vertex x to the vertex y, if it is not there
+				remove_edge(x, y): removes the edge from the vertex x to the vertex y, if it is there
+				get_vertex_value(x): returns the value associated with the vertex x
+				set_vertex_value(x, v): sets the value associated with the vertex x to v
 
 			Structures that associate values to the edges usually also provide:
-				get_edge_value(x, y): returns the value associated with the edge (x, y);
-				set_edge_value(x, y, v): sets the value associated with the edge (x, y) to v.
+				get_edge_value(x, y): returns the value associated with the edge (x, y)
+				set_edge_value(x, y, v): sets the value associated with the edge (x, y) to v
 			*/
 	};
+	namespace vertex_properties {
+		template<class vertex_data = unsigned int>
+		class signifiance_graph {
+
+		};
+		class vertex_unicity_graph {
+
+		};
+	}
+	namespace edge_properties {
+		template<class edge_data = unsigned int>
+		class weightness_graph {
+
+		};
+		class orientation_graph {
+
+		};
+		class edge_unicity_graph {
+
+		};
+	}
 }
 
 #endif
