@@ -205,7 +205,7 @@ namespace graph {
 		// ATTRIBUTES
 			private:
 				std::any container;
-				static unsigned int instances;
+				/* static */unsigned int instances;
 				std::map<std::string, unsigned int> properties;
 		// MEMBERS
 			public:
@@ -222,11 +222,11 @@ namespace graph {
 							{ "orientation", o }
 						};
 
-						switch(vertex_signifiance) {
+						switch(v_s) {
 							case significative:
-								if(vertex_uniqueness == unique_vertices) {
-									if(edge_uniqueness == unique_edges) {
-										switch(weightness) {
+								if(v_u == unique_vertices) {
+									if(e_u == unique_edges) {
+										switch(w) {
 											case weighted:
 												container = VS_s_VU_u_EU_u_W_w_graph<vertex_data, edge_data>();
 												break;
@@ -239,7 +239,7 @@ namespace graph {
 										}
 									}
 									else {
-										switch(weightness) {
+										switch(w) {
 											case weighted:
 												container = VS_s_VU_u_EU_nu_W_w_graph<vertex_data, edge_data>();
 												break;
@@ -253,8 +253,8 @@ namespace graph {
 									}
 								}
 								else {
-									if(edge_uniqueness == unique_edges) {
-										switch(weightness) {
+									if(e_u == unique_edges) {
+										switch(w) {
 											case weighted:
 												container = VS_s_VU_nu_EU_u_W_w_graph<vertex_data, edge_data>();
 												break;
@@ -267,7 +267,7 @@ namespace graph {
 										}
 									}
 									else {
-										switch(weightness) {
+										switch(w) {
 											case weighted:
 												container = VS_s_VU_nu_EU_nu_W_w_graph<vertex_data, edge_data>();
 												break;
@@ -282,9 +282,9 @@ namespace graph {
 								}
 								break;
 							case not_significative:
-								if(vertex_uniqueness == unique_vertices) {
-									if(edge_uniqueness == unique_edges) {
-										switch(weightness) {
+								if(v_u == unique_vertices) {
+									if(e_u == unique_edges) {
+										switch(w) {
 											case weighted:
 												container = VS_ns_VU_u_EU_u_W_w_graph<edge_data>();
 												break;
@@ -297,7 +297,7 @@ namespace graph {
 										}
 									}
 									else {
-										switch(weightness) {
+										switch(w) {
 											case weighted:
 												container = VS_ns_VU_u_EU_nu_W_w_graph<edge_data>();
 												break;
@@ -311,8 +311,8 @@ namespace graph {
 									}
 								}
 								else {
-									if(edge_uniqueness == unique_edges) {
-										switch(weightness) {
+									if(e_u == unique_edges) {
+										switch(w) {
 											case weighted:
 												container = VS_ns_VU_nu_EU_u_W_w_graph<edge_data>();
 												break;
@@ -325,7 +325,7 @@ namespace graph {
 										}
 									}
 									else {
-										switch(weightness) {
+										switch(w) {
 											case weighted:
 												container = VS_ns_VU_nu_EU_nu_W_w_graph<edge_data>();
 												break;
@@ -340,9 +340,9 @@ namespace graph {
 								}
 								break;
 							case mixed_signifiance:
-								if(vertex_uniqueness == unique_vertices) {
-									if(edge_uniqueness == unique_edges) {
-										switch(weightness) {
+								if(v_u == unique_vertices) {
+									if(e_u == unique_edges) {
+										switch(w) {
 											case weighted:
 												container = VS_ms_VU_u_EU_u_W_w_graph<vertex_data, edge_data>();
 												break;
@@ -355,7 +355,7 @@ namespace graph {
 										}
 									}
 									else {
-										switch(weightness) {
+										switch(w) {
 											case weighted:
 												container = VS_ms_VU_u_EU_nu_W_w_graph<vertex_data, edge_data>();
 												break;
@@ -369,8 +369,8 @@ namespace graph {
 									}
 								}
 								else {
-									if(edge_uniqueness == unique_edges) {
-										switch(weightness) {
+									if(e_u == unique_edges) {
+										switch(w) {
 											case weighted:
 												container = VS_ms_VU_nu_EU_u_W_w_graph<vertex_data, edge_data>();
 												break;
@@ -383,7 +383,7 @@ namespace graph {
 										}
 									}
 									else {
-										switch(weightness) {
+										switch(w) {
 											case weighted:
 												container = VS_ms_VU_nu_EU_nu_W_w_graph<vertex_data, edge_data>();
 												break;
