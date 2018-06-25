@@ -157,25 +157,25 @@ namespace graph {
 				// weightness: mixed
 					template<class vertex_data = unsigned int, class edge_data = unsigned int>
 					using VS_ms_VU_nu_EU_nu_W_mw_graph = std::multimap<std::optional<vertex_data>, std::multimap<std::multimap<std::any, std::any>::const_pointer, std::optional<edge_data>>>;
-	enum vertex_uniqueness {
+	enum vertex_uniqueness : unsigned int {
 		unique_vertices,
 		not_unique_vertices
 	};
-	enum vertex_signifiance {
+	enum vertex_signifiance : unsigned int {
 		significative,
 		not_significative,
 		mixed_signifiance
 	};
-	enum edge_uniqueness {
+	enum edge_uniqueness : unsigned int {
 		unique_edges,
 		not_unique_edges
 	};
-	enum orientation {
+	enum orientation : unsigned int {
 		oriented,
 		unoriented,
 		mixed_orientation
 	};
-	enum weightness {
+	enum weightness : unsigned int {
 		weighted,
 		unweighted,
 		mixed_weightness
@@ -185,17 +185,16 @@ namespace graph {
 			std::string message = "The graphs do not have the same properties";
 		public:
 			graph_incompatibility(
-				const std::map<std::string, std::any>& properties_1 = std::map<std::string, std::any>(),
-				const std::map<std::string, std::any>& properties_2 = std::map<std::string, std::any>()) {
+				const std::map<std::string, unsigned int>& properties_1 = std::map<std::string, unsigned int>(),
+				const std::map<std::string, unsigned int>& properties_2 = std::map<std::string, unsigned int>()) {
 
 				if(!properties_1.empty() && !properties_2.empty()) {
-
-					for(const auto [key, value] : properties_1) {
-						/*
+					message += ": ";
+					for(const auto[key, value] : properties_1) {
 						if(value != properties_2.at(key))
-							message += key;
-						*/
+							message += (key + " ");
 					}
+					message += "are different";
 				}
 			}
 			virtual const char* what() const throw() { return message.c_str(); }
@@ -207,7 +206,7 @@ namespace graph {
 			private:
 				std::any container;
 				static unsigned int instances;
-				std::map<std::string, std::any> properties;
+				std::map<std::string, unsigned int> properties;
 		// MEMBERS
 			public:
 				// default constructor
