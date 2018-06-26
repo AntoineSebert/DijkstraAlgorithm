@@ -205,7 +205,7 @@ namespace graph {
 		// ATTRIBUTES
 			private:
 				std::any container;
-				/* static */unsigned int instances;
+				/* static */ unsigned int instances;
 				std::map<std::string, unsigned int> properties;
 		// MEMBERS
 			public:
@@ -426,13 +426,19 @@ namespace graph {
 							}
 						// add vertices and edges
 							abstract_graph operator+(const abstract_graph& rhs) {
+								if(!isCompatible(rhs))
+									throw graph_incompatibility(properties, rhs.properties);
 								if(std::equal(properties.cbegin(), properties.cend(), rhs.properties.cbegin()))
 									container.merge(rhs.container);
 								// check stuff
+
+
 								return this;
 							}
 						// remove vertices and edges if they exist
 							abstract_graph* operator-(const abstract_graph& rhs) {
+								if(!isCompatible(rhs))
+									throw graph_incompatibility(properties, rhs.properties);
 								for(vertex_data element : rhs.container)
 									container.erase(element);
 								// check the edges
@@ -562,6 +568,9 @@ namespace graph {
 							}
 							return false;
 						}
+					// adds the vertex x, if it is not there
+						template<class vertex_data = unsigned int>
+						auto add_vertex(const vertex_data& element) { return container.insert(element); }
 			/*
 			The basic operations provided by a graph data structure G usually include:
 				adjacent(x, y): tests whether there is an edge from the vertex x to the vertex y
@@ -578,27 +587,6 @@ namespace graph {
 				set_edge_value(x, y, v): sets the value associated with the edge (x, y) to v
 			*/
 	};
-	namespace vertex_properties {
-		template<class vertex_data = unsigned int>
-		class signifiance_graph {
-
-		};
-		class vertex_unicity_graph {
-
-		};
-	}
-	namespace edge_properties {
-		template<class edge_data = unsigned int>
-		class weightness_graph {
-
-		};
-		class orientation_graph {
-
-		};
-		class edge_unicity_graph {
-
-		};
-	}
 }
 
 #endif
