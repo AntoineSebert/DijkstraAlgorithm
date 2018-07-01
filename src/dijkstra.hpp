@@ -5,10 +5,17 @@
  * @note in this implementation, the weights are positives
  * @date 01/04/2018
  * @todo Spécialisation de l'algorithme : arrêter la recherche lorsque l'égalité s(1) = s(fin) est vérifiée, dans le cas où on ne cherche que la distance minimale entre s(deb) et s(fin)
+ *	1  S ← empty sequence
+ *	2  u ← target
+ *	3  while prev[u] is defined:                 // Construct the shortest path with a stack S
+ *	4      insert u at the beginning of S        // Push the vertex onto the stack
+ *	5      u ← prev[u]                           // Traverse from target to source
+ *	6  insert u at the beginning of S            // Push the source onto the stack
  */
 
 #pragma once
 
+#include <any>
 #include <algorithm>
 #include <chrono>
 #include <iostream>
@@ -20,39 +27,29 @@
 #include <utility>
 #include <vector>
 
-#ifndef weight
-#define weight std::shared_ptr<unsigned int>
-#endif
-
-// node index + node weight
-typedef std::pair<unsigned int, unsigned int> node;
-typedef std::pair<std::weak_ptr<node>, std::weak_ptr<node>> link;
+#include "../../fiboheap/fiboheap.hpp"
 
 namespace dijkstra_algorithm {
-	void* AbstractNode;
-	class AbstractGraphContainer {
-		virtual ~AbstractGraphContainer() noexcept = 0;
+	template<class edge_data> struct graph_test
+		: std::set<typename std::map<typename graph_test<edge_data>::const_pointer, edge_data>> {
+		using std::map<typename graph_test<edge_data>::const_pointer, edge_data>::map;
 	};
-	class AbstractWeightContainer {
-		virtual ~AbstractWeightContainer() noexcept = 0;
-	};
+}
+
+namespace dijkstra_algorithm {
+	template<class edge_data>
 	class Dijkstra {
 		/* ATTRIBUTES */
 			private:
-				std::shared_ptr<node> firstNode;
-				/*
-				 * Collection of unique vertices (based on their index), iterable and direct access through key value
-				*/
-				std::set<std::shared_ptr<node>/*, comparison*/> vertices;
-				std::priority_queue<weight, std::vector<weight>/*, comparison*/> weights;
-				std::map<link, weight/*, comparison*/> paths; // assert(link.first < link.second)
-				AbstractGraphContainer* graphContainer; // adjacency list
+				graph_test<edge_data>* graphContainer;
+				graph_test<edge_data>::const_reference;
+				//graph_test<edge_data>::const_pointer start, finish;
 		/* MEMBERS */
 			public:
 				// constructors
-					Dijkstra()/* = delete*/ {} // delete default constructor ?
-					Dijkstra(const Dijkstra& other) : vertices(other.vertices), paths(other.paths) {}
-					Dijkstra(Dijkstra&& other) noexcept : vertices(other.vertices), paths(other.paths) { /* destroy eventual dynamic data */ }
+					Dijkstra(graph_test<edge_data>* data/*, graph_test<edge_data>::const_pointer start, graph_test<edge_data>::const_pointer finish*/) {}
+					Dijkstra(const Dijkstra& other) : graphContainer(graphContainer) {}
+					Dijkstra(Dijkstra&& other) noexcept : graphContainer(graphContainer) { /* destroy eventual dynamic data */ }
 				// destructors
 					~Dijkstra() noexcept/* = default*/ {} // maybe not need to redefine
 				// operators
@@ -66,69 +63,31 @@ namespace dijkstra_algorithm {
 						if(this == &other)
 							return *this;
 
-						vertices = other.vertices;
-						paths = other.paths;
+						graphContainer = other.graphContainer;
 						/* destroy eventual dynamic data */
 
 						return *this;
 					}
 			protected:
-				/*
-				Initialisation(G,s(deb))
-				1 pour chaque point s de G faire
-				2 	d[s] := infini	// on initialise les sommets autres que s(deb) à infini
-				3 fin pour
-				4 d[sdeb] := 0	// la distance au sommet de départ s(deb) est nulle
-				*/
-				void init() {
+				void run() {
 					/*
-					for(auto const& [key, val] : vertices)
-						val.get() = numeric_limits<int>::max();
+					dist[source] ← 0                           // Initialization
+					create vertex set Q
+					for each vertex v in Graph :
+						if v ≠ source
+							dist[v] ← INFINITY                 // Unknown distance from source to v
+						prev[v] ← UNDEFINED                    // Predecessor of v
+						Q.add_with_priority(v, dist[v])
+						while Q is not empty:                      // The main loop
+							u ← Q.extract_min()                    // Remove and return best vertex
+							for each neighbor v of u :              // only v that is still in Q
+								alt ← dist[u] + length(u, v)
+								if alt < dist[v]
+									dist[v] ← alt
+									prev[v] ← u
+									Q.decrease_priority(v, alt)
+					return dist, prev
 					*/
-					firstNode->second = 0;
-				}
-				/*
-				1 mini := infini
-				2 sommet := -1
-				3 pour chaque sommet s de Q
-				4 	si d[s] < mini
-				5 		mini := d[s]
-				6 		sommet := s
-				7 renvoyer sommet
-				*/
-				// the priority_queue does the job for us
-				[[maybe_unused]] unsigned int* findMinDistance() { }
-				/*
-				1 si d[s2] > d[s1] + Poids(s1,s2)	// Si la distance de sdeb à s2 est plus grande que celle de sdeb à S1 plus celle de S1 à S2
-				2 	d[s2] := d[s1] + Poids(s1,s2)	// On prend ce nouveau chemin qui est plus court
-				3s 	prédécesseur[s2] := s1	// En notant par où on passe
-				*/
-				void distancesUpdate() { }
-				/*
-				1 A = suite vide
-				2 s := sfin
-				3 tant que s != sdeb faire
-				4 	A = A + s	// on ajoute s à la suite A
-				5 	s = prédécesseur[s]	// on continue de suivre le chemin
-				6 fin tant que
-				*/
-				std::pair<unsigned int*, unsigned int*> shortestPath() { }
-				/*
-				Initialisation(G,sdeb)
-				2 Q := ensemble de tous les nœuds
-				3 tant que Q n'est pas un ensemble vide faire
-				4 	s1 := Trouve_min(Q)
-				5 	Q := Q privé de s1
-				6 	pour chaque nœud s2 voisin de s1 faire
-				7 		maj_distances(s1,s2)
-				8 	fin pour
-				9 fin tant que
-				*/
-				void mainAlgorithm() {
-					init();
-					while(vertices.size()) {
-
-					}
 				}
 	};
 }
