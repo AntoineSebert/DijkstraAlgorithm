@@ -30,35 +30,30 @@
 #include "../../fiboheap/fiboheap.hpp"
 
 namespace dijkstra_algorithm {
-	template<class edge_data> struct graph_test
-		: std::set<typename std::map<typename graph_test<edge_data>::const_pointer, edge_data>> {
-		using std::map<typename graph_test<edge_data>::const_pointer, edge_data>::map;
-	};
+	template<typename edge_data = unsigned int>
+	using graph_test = std::set<std::map<std::set<std::any>::const_iterator, edge_data>>;
 }
 
 namespace dijkstra_algorithm {
-	template<class edge_data>
 	class Dijkstra {
 		/* ATTRIBUTES */
 			private:
-				graph_test<edge_data>* graphContainer;
-				graph_test<edge_data>::const_reference;
-				//graph_test<edge_data>::const_pointer start, finish;
+				graph_test<std::any>* graphContainer;
+				//typename graph_test<edge_data>::const_pointer start, finish;
+				FibHeap<std::any> queue;
 		/* MEMBERS */
 			public:
 				// constructors
-					Dijkstra(graph_test<edge_data>* data/*, graph_test<edge_data>::const_pointer start, graph_test<edge_data>::const_pointer finish*/) {}
+					template<typename T>
+					Dijkstra(graph_test<T>* data) : queue(FibHeap<T>()) {
+
+					}
 					Dijkstra(const Dijkstra& other) : graphContainer(graphContainer) {}
 					Dijkstra(Dijkstra&& other) noexcept : graphContainer(graphContainer) { /* destroy eventual dynamic data */ }
 				// destructors
 					~Dijkstra() noexcept/* = default*/ {} // maybe not need to redefine
 				// operators
-					Dijkstra& operator=(const Dijkstra& other) {
-						Dijkstra tmp(other);
-						*this = std::move(tmp);
-
-						return *this;
-					}
+					Dijkstra& operator=(const Dijkstra& other) { return (*this = std::move(Dijkstra(other))); }
 					Dijkstra& operator=(Dijkstra&& other) noexcept {
 						if(this == &other)
 							return *this;
