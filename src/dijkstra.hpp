@@ -1,7 +1,6 @@
 /*
  * @author Antoine "Anthony" Sébert
- * @description An implementation of the Dijkstra's algorithm in C++17 as a single header library
- * @note no need to specialize std::swap, because it uses the move constructor and move assignment operator
+ * @description Implementation of the Dijkstra's algorithm in C++17 as a single header library using fibonacci heap and named tuples
  * @note in this implementation, the weights are positives
  * @date 01/04/2018
  * @todo Spécialisation de l'algorithme : arrêter la recherche lorsque l'égalité s(1) = s(fin) est vérifiée, dans le cas où on ne cherche que la distance minimale entre s(deb) et s(fin)
@@ -21,17 +20,14 @@
 #define DIJKSTRA_HPP
 
 #include <any>
-#include <algorithm>
 #include <cassert>
 #include <chrono>
 #include <iostream>
 #include <limits>
 #include <map>
-#include <memory>
-#include <queue>
+#include <optional>
 #include <set>
 #include <utility>
-#include <vector>
 
 #include "../../fiboheap/fiboheap.hpp"
 
@@ -43,32 +39,46 @@ namespace std {
 		//return first < second;
 	}
 
-	any dijkstra(set<map<set<any>::const_iterator, int>>::iterator _Start, set<map<set<any>::const_iterator, int>>::iterator _Arr) {
+	void getNeighbors(set<map<set<any>::const_iterator, int>> vertex) {
+
+	}
+
+	pair<optional<any>, chrono::duration<double>> dijkstra(const set<map<set<any>::const_iterator, int>>& data, set<map<set<any>::const_iterator, int>>::iterator _Start, set<map<set<any>::const_iterator, int>>::iterator _Arr) {
+		auto start = chrono::system_clock::now();
+
 		check_range(_Start, _Arr);
 
+		//dist[source] ← 0								// Initialization
 		FibHeap<int> queue = FibHeap<int>();
-
-		//cout << typeid(*_Start).name() << endl;
 		/*
-		dist[source] ← 0                           // Initialization
-		create vertex set Q
-		for each vertex v in Graph :
-			if v ≠ source
-				dist[v] ← INFINITY                 // Unknown distance from source to v
-			prev[v] ← UNDEFINED                    // Predecessor of v
-			Q.add_with_priority(v, dist[v])
-			while Q is not empty:                      // The main loop
-				u ← Q.extract_min()                    // Remove and return best vertex
-				for each neighbor v of u :              // only v that is still in Q
-					alt ← dist[u] + length(u, v)
-					if alt < dist[v]
-						dist[v] ← alt
-						prev[v] ← u
-						Q.decrease_priority(v, alt)
+		for(each vertex v in Graph) {
+			if(v != source)
+				dist[v] = INFINITY						// Unknown distance from source to v
+			prev[v] = UNDEFINED							// Predecessor of v
+			queue.add_with_priority(v, dist[v])
+			*/
+			while(!queue.empty()) {						// The main loop
+				/*
+				u = queue.extract_min()					// Remove and return best vertex
+				for_each(neighbor v of u) {				// only v that is still in Q
+					if(alt = dist[u] + length(u, v); alt < dist[v]) {
+						dist[v] = alt
+						prev[v] = u
+						queue.decrease_priority(v, alt)
+					}
+				}
+				*/
+			}
+		/*
+		}
 		return dist, prev
 		*/
 
-		return any();
+		auto end = chrono::system_clock::now();
+		chrono::duration<double> elapsed_time = end - start;
+		std::cout << "elapsed time: " << elapsed_time.count() << "s\n";
+
+		return pair<optional<any>, chrono::duration<double>>();
 	}
 }
 
