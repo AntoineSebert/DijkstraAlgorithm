@@ -39,45 +39,39 @@ namespace std {
 		//return first < second;
 	}
 
-	void getNeighbors(set<map<set<any>::const_iterator, int>> vertex) {
-
-	}
-
-	pair<optional<any>, chrono::duration<double>> dijkstra(const set<map<set<any>::const_iterator, int>>& data, set<map<set<any>::const_iterator, int>>::iterator _Start, set<map<set<any>::const_iterator, int>>::iterator _Arr) {
+	pair<optional<any>, chrono::duration<double>> dijkstra(const set<map<set<any>::const_iterator, unsigned int>>& data, set<map<set<any>::const_iterator, unsigned int>>::iterator _Start, set<map<set<any>::const_iterator, unsigned int>>::iterator _Arr) {
 		auto start = chrono::system_clock::now();
 
 		check_range(_Start, _Arr);
 
-		//dist[source] ← 0								// Initialization
-		FibHeap<int> queue = FibHeap<int>();
-		/*
-		for(each vertex v in Graph) {
-			if(v != source)
-				dist[v] = INFINITY						// Unknown distance from source to v
-			prev[v] = UNDEFINED							// Predecessor of v
-			queue.add_with_priority(v, dist[v])
+		//dist[source] = 0								// Initialization
+		FibHeap<unsigned int> queue = FibHeap<unsigned int>();
+		for(const auto& vertex : data) {
+			/*
+			if(vertex != *_Start)
+				dist[vertex] = INFINITY;									// Unknown distance from source to v
+			prev[vertex] = UNDEFINED;										// Predecessor of v
+			queue.add_with_priority(vertex, dist[vertex]);
 			*/
-			while(!queue.empty()) {						// The main loop
-				/*
-				u = queue.extract_min()					// Remove and return best vertex
-				for_each(neighbor v of u) {				// only v that is still in Q
-					if(alt = dist[u] + length(u, v); alt < dist[v]) {
-						dist[v] = alt
-						prev[v] = u
-						queue.decrease_priority(v, alt)
-					}
-				}
-				*/
-			}
-		/*
 		}
-		return dist, prev
-		*/
+		while(!queue.empty()) {												// The main loop
+			auto u = queue.extract_min();									// Remove and return best vertex
+			/*
+			for(const auto& vertex : u) {									// only v that is still in Q
+				if(alt = dist[u] + length(u, vertex); alt < dist[vertex]) {
+					dist[vertex] = alt;
+					prev[vertex] = u;
+					queue.decrease_priority(vertex, alt);
+				}
+			}
+				*/
+		}
 
 		auto end = chrono::system_clock::now();
 		chrono::duration<double> elapsed_time = end - start;
 		std::cout << "elapsed time: " << elapsed_time.count() << "s\n";
 
+		//return dist, prev
 		return pair<optional<any>, chrono::duration<double>>();
 	}
 }
