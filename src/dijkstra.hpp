@@ -32,6 +32,11 @@
 #include "../../fiboheap/fiboheap.hpp"
 
 namespace std {
+
+	using graph = set<map<set<any>::const_iterator, unsigned int>>;
+	using graph_iterator = graph::iterator;
+	using graph_const_iterator = graph::const_iterator;
+
 	template<class Iter>
 	void check_range(Iter first, Iter second) {
 		static_cast<void>(first == second); // ill-formed compilation if iterators are not comparable, making it fail
@@ -39,32 +44,34 @@ namespace std {
 		//return first < second;
 	}
 
-	pair<optional<any>, chrono::duration<double>> dijkstra(const set<map<set<any>::const_iterator, unsigned int>>& data, set<map<set<any>::const_iterator, unsigned int>>::iterator _Start, set<map<set<any>::const_iterator, unsigned int>>::iterator _Arr) {
+	pair<optional<any>, chrono::duration<double>> dijkstra(const graph& data, graph_iterator _Start, graph_iterator _Arr) {
 		auto start = chrono::system_clock::now();
 
 		check_range(_Start, _Arr);
 
-		//dist[source] = 0								// Initialization
-		FibHeap<unsigned int> queue = FibHeap<unsigned int>();
+		//dist[source] = 0													// Initialization
+		FibHeap<graph_iterator> queue = FibHeap<graph_iterator>();
+
 		for(const auto& vertex : data) {
 			/*
 			if(vertex != *_Start)
 				dist[vertex] = INFINITY;									// Unknown distance from source to v
 			prev[vertex] = UNDEFINED;										// Predecessor of v
-			queue.add_with_priority(vertex, dist[vertex]);
 			*/
+			//queue.push(vertex, /*dist[vertex]*/);
 		}
+
 		while(!queue.empty()) {												// The main loop
 			auto u = queue.extract_min();									// Remove and return best vertex
-			/*
-			for(const auto& vertex : u) {									// only v that is still in Q
-				if(alt = dist[u] + length(u, vertex); alt < dist[vertex]) {
+			for(const auto& vertex : *u->key) {								// only v that is still in Q
+				/*
+				if(unsigned int alt = dist[u] + length(u, vertex); alt < dist[vertex]) {
 					dist[vertex] = alt;
 					prev[vertex] = u;
 					queue.decrease_priority(vertex, alt);
 				}
-			}
 				*/
+			}
 		}
 
 		auto end = chrono::system_clock::now();
