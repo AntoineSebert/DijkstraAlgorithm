@@ -1,6 +1,6 @@
 /*
  * @author Antoine "Anthony" Sébert
- * @description Implementation of the Dijkstra's algorithm in C++17 as a single header library using fibonacci heap and named tuples
+ * @description Implementation of Dijkstra's algorithm in C++17 as a single header library using a fibonacci heap and named tuples
  * @note in this implementation, the weights are positives
  * @date 01/04/2018
  * @todo Spécialisation de l'algorithme : arrêter la recherche lorsque l'égalité s(1) = s(fin) est vérifiée, dans le cas où on ne cherche que la distance minimale entre s(deb) et s(fin)
@@ -10,6 +10,7 @@
  *	4      insert u at the beginning of S        // Push the vertex onto the stack
  *	5      u ← prev[u]                           // Traverse from target to source
  *	6  insert u at the beginning of S            // Push the source onto the stack
+  * https://www.cl.cam.ac.uk/teaching/1112/AlgorithII/1987-FredmanTar-fibonacci.pdf
  */
 
 #if 201703L <= __cplusplus
@@ -34,6 +35,7 @@
 namespace std {
 
 	using graph = set<map<set<any>::const_iterator, unsigned int>>;
+
 	using graph_iterator = graph::iterator;
 	using graph_const_iterator = graph::const_iterator;
 
@@ -52,13 +54,13 @@ namespace std {
 		//dist[source] = 0													// Initialization
 		FibHeap<graph_iterator> queue = FibHeap<graph_iterator>();
 
-		for(const auto& vertex : data) {
+		for(auto it = data.begin(); it != data.end(); ++it) {
 			/*
 			if(vertex != *_Start)
 				dist[vertex] = INFINITY;									// Unknown distance from source to v
 			prev[vertex] = UNDEFINED;										// Predecessor of v
 			*/
-			//queue.push(vertex, /*dist[vertex]*/);
+			queue.push(it, /*dist[vertex]*/);
 		}
 
 		while(!queue.empty()) {												// The main loop
@@ -76,7 +78,7 @@ namespace std {
 
 		auto end = chrono::system_clock::now();
 		chrono::duration<double> elapsed_time = end - start;
-		std::cout << "elapsed time: " << elapsed_time.count() << "s\n";
+		cout << "elapsed time: " << elapsed_time.count() << "s" << endl;
 
 		//return dist, prev
 		return pair<optional<any>, chrono::duration<double>>();
