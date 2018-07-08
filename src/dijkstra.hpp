@@ -10,7 +10,7 @@
  *	4      insert u at the beginning of S        // Push the vertex onto the stack
  *	5      u ← prev[u]                           // Traverse from target to source
  *	6  insert u at the beginning of S            // Push the source onto the stack
-  * https://www.cl.cam.ac.uk/teaching/1112/AlgorithII/1987-FredmanTar-fibonacci.pdf
+ *	https://www.cl.cam.ac.uk/teaching/1112/AlgorithII/1987-FredmanTar-fibonacci.pdf
  */
 
 #if 201703L <= __cplusplus
@@ -33,35 +33,53 @@
 #include "../../fiboheap/fiboheap.hpp"
 
 namespace std {
+	template<typename T = unsigned int>
+	using graph = set<map<set<any>::const_iterator, T>>;
+	template<typename T = unsigned int>
+	using graph_iterator = graph<>::iterator;
+	template<typename T = unsigned int>
+	using graph_const_iterator = graph<>::const_iterator;
+}
 
-	using graph = set<map<set<any>::const_iterator, unsigned int>>;
+namespace std {
+	template <class T, class = void>
+	struct is_iterator : false_type {};
+	template <class T>
+	struct is_iterator<T, void_t<typename iterator_traits<T>::iterator_category>> : true_type { };
 
-	using graph_iterator = graph::iterator;
-	using graph_const_iterator = graph::const_iterator;
-
-	template<class Iter>
-	void check_range(Iter first, Iter second) {
+	template<typename Iter>
+	bool check_range(const Iter first, const Iter second) {
 		static_cast<void>(first == second); // ill-formed compilation if iterators are not comparable, making it fail
-		// throw range_error("invalid iterator range");
-		//return first < second;
+		return is_iterator<Iter>();
 	}
 
-	pair<optional<any>, chrono::duration<double>> dijkstra(const graph& data, graph_iterator _Start, graph_iterator _Arr) {
+	template<typename T = unsigned int>
+	pair<optional<any>, chrono::duration<double>> dijkstra(const graph<typename T>& data, graph_iterator<typename T> Start, graph_iterator<typename T> Arr) {
 		auto start = chrono::system_clock::now();
 
-		check_range(_Start, _Arr);
+		check_range(Start, Arr);
 
-		//dist[source] = 0													// Initialization
-		FibHeap<graph_iterator> queue = FibHeap<graph_iterator>();
+		FibHeap<graph_iterator<T>> queue = FibHeap<graph_iterator<T>>();
+		map<graph_const_iterator<T>, T> distances = map<graph_const_iterator<T>, T>();
+		//map<graph_const_iterator, graph_const_iterator> path = map<graph_const_iterator, graph_const_iterator>();
 
 		for(auto it = data.begin(); it != data.end(); ++it) {
 			/*
-			if(vertex != *_Start)
-				dist[vertex] = INFINITY;									// Unknown distance from source to v
-			prev[vertex] = UNDEFINED;										// Predecessor of v
+			distances.insert_or_assign(it,
+				(numeric_limits<unsigned int>::has_infinity() ? numeric_limits<unsigned int>::infinity() : numeric_limits<unsigned int>::max())
+			);
 			*/
-			queue.push(it, /*dist[vertex]*/);
+			if(numeric_limits<unsigned int>::has_infinity())
+				distances.insert_or_assign(it, numeric_limits<unsigned int>::infinity());
+			else
+				distances.insert_or_assign(it, numeric_limits<unsigned int>::max());
+			//path.insert_or_assign(it, nullptr);
+			/*
+			prev[*it] = UNDEFINED;											// Predecessor of v
+			*/
+			queue.push(it, distances.at(it));
 		}
+		//dist[source] = 0													// Initialization
 
 		while(!queue.empty()) {												// The main loop
 			auto u = queue.extract_min();									// Remove and return best vertex
