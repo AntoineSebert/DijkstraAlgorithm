@@ -638,7 +638,7 @@ namespace graph {
 				set_edge_value(x, y, v): sets the value associated with the edge (x, y) to v
 			*/
 
-			void* casted_container() {
+			std::any casted_container() {
 				switch(properties.at("vertex_signifiance")) {
 					case significative:
 						if(properties.at("vertex_uniqueness") == unique_vertices) {

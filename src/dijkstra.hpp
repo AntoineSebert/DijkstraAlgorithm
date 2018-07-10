@@ -28,17 +28,20 @@
 #include <map>
 #include <optional>
 #include <set>
+#include <unordered_set>
 #include <utility>
 
 #include "../../fiboheap/fiboheap.hpp"
 
 namespace std {
-	template<typename T = unsigned int>
-	using graph = set<map<set<any>::const_iterator, T>>;
-	template<typename T = unsigned int>
-	using graph_iterator = graph<>::iterator;
-	template<typename T = unsigned int>
-	using graph_const_iterator = graph<>::const_iterator;
+	template<typename T>
+	using graph = set<map<unsigned int, T>>;
+
+	template<typename T>
+	using graph_iterator = typename graph<T>::iterator;
+
+	template<typename T>
+	using graph_const_iterator = typename graph<T>::const_iterator;
 }
 
 namespace std {
@@ -54,36 +57,34 @@ namespace std {
 	}
 
 	template<typename T = unsigned int>
-	pair<optional<any>, chrono::duration<double>> dijkstra(const graph<typename T>& data, graph_iterator<typename T> Start, graph_iterator<typename T> Arr) {
+	pair<optional<any>, chrono::duration<double>> dijkstra(const graph<typename T>& data, graph_iterator<typename T> Source, graph_iterator<typename T> Arr) {
+		if(data.empty() == false)
+			return pair<optional<any>, chrono::duration<double>>();
+
+		// Initialization
+		check_range(Source, Arr);
+
 		auto start = chrono::system_clock::now();
 
-		check_range(Start, Arr);
-
 		FibHeap<graph_iterator<T>> queue = FibHeap<graph_iterator<T>>();
-		map<graph_const_iterator<T>, T> distances = map<graph_const_iterator<T>, T>();
-		//map<graph_const_iterator, graph_const_iterator> path = map<graph_const_iterator, graph_const_iterator>();
+		vector<T> distances(data.size(), numeric_limits<unsigned int>::max());
+		//distances.at(distance(Source, data.begin())) = 0;
+		cout << distance(Source, data.begin()) << ':' << distances.size() << endl;
+		unordered_set<optional<unsigned int>> path;
 
-		for(auto it = data.begin(); it != data.end(); ++it) {
-			/*
-			distances.insert_or_assign(it,
-				(numeric_limits<unsigned int>::has_infinity() ? numeric_limits<unsigned int>::infinity() : numeric_limits<unsigned int>::max())
-			);
-			*/
-			if(numeric_limits<unsigned int>::has_infinity())
-				distances.insert_or_assign(it, numeric_limits<unsigned int>::infinity());
-			else
-				distances.insert_or_assign(it, numeric_limits<unsigned int>::max());
-			//path.insert_or_assign(it, nullptr);
-			/*
-			prev[*it] = UNDEFINED;											// Predecessor of v
-			*/
-			queue.push(it, distances.at(it));
+		assert(data.size() == distances.size());
+
+		unsigned int i = 0;
+		for(const auto& element : data) {
+			//typeid(element).name();
+			//queue.push(element, distances.at(i));
+			++i;
 		}
-		//dist[source] = 0													// Initialization
+
 
 		while(!queue.empty()) {												// The main loop
 			auto u = queue.extract_min();									// Remove and return best vertex
-			for(const auto& vertex : *u->key) {								// only v that is still in Q
+			//for(const auto& vertex : (data.begin() + u->payload)) {								// only v that is still in Q
 				/*
 				if(unsigned int alt = dist[u] + length(u, vertex); alt < dist[vertex]) {
 					dist[vertex] = alt;
@@ -91,7 +92,7 @@ namespace std {
 					queue.decrease_priority(vertex, alt);
 				}
 				*/
-			}
+			//}
 		}
 
 		auto end = chrono::system_clock::now();
