@@ -58,18 +58,18 @@ namespace std {
 
 	template<typename T = unsigned int>
 	pair<optional<any>, chrono::duration<double>> dijkstra(const graph<typename T>& data, graph_iterator<typename T> Source, graph_iterator<typename T> Arr) {
+		/*
 		if(data.empty() == false)
 			return pair<optional<any>, chrono::duration<double>>();
-
+		*/
 		// Initialization
 		check_range(Source, Arr);
 
-		auto start = chrono::system_clock::now();
+		auto start = chrono::high_resolution_clock::now();
 
-		FibHeap<graph_iterator<T>> queue = FibHeap<graph_iterator<T>>();
+		fibonacci_heap::fibonacci_heap<unsigned int> queue = fibonacci_heap::fibonacci_heap<unsigned int>();
 		vector<T> distances(data.size(), numeric_limits<unsigned int>::max());
 		//distances.at(distance(Source, data.begin())) = 0;
-		cout << distance(Source, data.begin()) << ':' << distances.size() << endl;
 		unordered_set<optional<unsigned int>> path;
 
 		assert(data.size() == distances.size());
@@ -95,7 +95,7 @@ namespace std {
 			//}
 		}
 
-		auto end = chrono::system_clock::now();
+		auto end = chrono::high_resolution_clock::now();
 		chrono::duration<double> elapsed_time = end - start;
 		cout << "elapsed time: " << elapsed_time.count() << "s" << endl;
 
